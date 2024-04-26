@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Employee Page";
+}
+
+<div class="pt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-4 col-sm-4 col-md-4 form-group">
+                    <select class="form-control">
+                        <option> -- All user -- </option>
+                        <option> -- Waiter -- </option>
+                        <option> -- Chef -- </option>
+                    </select>
+                </div>
+                <div class="col-4 col-sm-4 col-md-4 form-group">
+                    <input class="form-control" placeholder="search order..." />
+                </div>
+                <div class="col-4 col-sm-4 col-md-4 form-group text-right">
+                    <button class="btn btn-primary">Create new</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-3">
+            <div class="table-responsive bg-white" style="border-radius: 10px; overflow: hidden;">
+                <table class="table table-hover mb-1">
+                    <thead>
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Full name</th>
+                            <th class="text-center">Role</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < 10; i++)
+                        {
+                            <tr>
+                                <td class="text-center">#25615</td>
+                                <td class="text-center">Nguyễn Văn A</td>
+                                <td class="text-center">Waiter</td>
+                                <td class="text-center">nguyenvana@gmail.com</td>
+                                <td class="text-right">
+                                    <img src="/images/icons/pencil.png" class="cursor-pointer" width="20" height="20"/>
+                                    <img src="/images/icons/trash.png" class="cursor-pointer ml-2" width="20" height="20" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <ul class="pagination justify-content-center mb-1 pt-1" style="border-top: 2px solid #00000030">
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

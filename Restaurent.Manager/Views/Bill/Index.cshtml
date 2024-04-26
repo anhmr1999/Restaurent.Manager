@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Order Page";
+}
+
+<div class="pt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-4 col-sm-4 col-md-4 form-group">
+                    <select class="form-control">
+                        <option> -- All orders -- </option>
+                        <option> -- Paid orders -- </option>
+                        <option> -- Unpaid orders -- </option>
+                    </select>
+                </div>
+                <div class="col-4 col-sm-4 col-md-4 form-group">
+                    <input type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" placeholder="sort by date"/>
+                </div>
+                <div class="col-4 col-sm-4 col-md-4 form-group">
+                    <input class="form-control" placeholder="search order..."/>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-3">
+            <div class="table-responsive bg-white" style="border-radius: 10px; overflow: hidden;">
+                <table class="table table-hover mb-1">
+                    <thead>
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Table</th>
+                            <th class="text-center">Date</th>
+                            <th class="text-center">Total</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < 10; i++)
+                        {
+                            <tr>
+                                <td class="text-center">#25615</td>
+                                <td class="text-center">T@(i+1)</td>
+                                <td class="text-center">@DateTime.Now.ToShortDateString()</td>
+                                <td class="text-center">500.000đ</td>
+                                <td class="text-center">
+                                    @if(i%2==0){
+                                        <strong class="text-danger">Unpaid</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong class="text-success">Paid</strong>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <ul class="pagination justify-content-center mb-1 pt-1" style="border-top: 2px solid #00000030">
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

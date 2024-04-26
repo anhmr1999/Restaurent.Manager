@@ -1,0 +1,240 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    background-color: #ffefe3 !important;
+}
+
+.modal-content {
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: #ffefe3 !important;
+}
+
+.modal .modal-quantity-btn{
+    padding: 0 10px 3px 10px;
+    border-radius: 3px;
+    border: 1px solid #00000060;
+    font-weight: bold
+}
+
+.role-span {
+    border-radius: 20px;
+    font-size: .8rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border: 1px solid #00000020;
+    color: #FFF;
+}
+
+    .role-span.admin {
+        background-color: #1e90ff;
+    }
+
+    .role-span.chef {
+        background-color: #8b4513;
+    }
+
+    .role-span.waiter {
+        background-color: #2e8b57;
+    }
+
+.login-body {
+    background-image: url("/images/background-login.jpg");
+    background-size: cover;
+    height: 100vh;
+}
+
+    .login-body .black-screen {
+        width: 100%;
+        height: 100%;
+        background-color: #00000040;
+    }
+
+.login-form {
+    margin-top: -2rem;
+    width: 350px;
+    border-radius: 20px;
+    background-color: #ffefe3 !important;
+    padding: 1.5rem;
+}
+
+.bg-nav {
+    background-color: #e49557 !important;
+    padding: 0 !important;
+}
+
+    .bg-nav .nav-link {
+        padding: 1rem !important;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #FFF !important;
+    }
+
+        .bg-nav .nav-link.active {
+            background-color: #ffd3b2;
+            color: #e49557 !important
+        }
+
+    .bg-nav .avt {
+        padding: .5rem 0 .5rem .5rem !important;
+    }
+
+        .bg-nav .avt img {
+            border-radius: 50%;
+        }
+
+        .bg-nav .avt:hover .logout-option{
+            display: block;
+        }
+
+        .bg-nav .avt .logout-option {
+            padding: .7rem;
+            background: #ffefe3;
+            border-radius: 10px;
+            border: 3px solid #00000040;
+            top: 100%;
+            right: 0;
+            z-index: 1;
+            width: 300px;
+            display: none;
+        }
+
+            .bg-nav .avt .logout-option .user-info {
+                background: #ffefe3;
+                border-radius: 10px;
+                border: 2px solid #00000040;
+                padding: .7rem;
+            }
+
+.toolbar {
+    border-radius: 10px;
+    width: 100%;
+    margin: auto;
+    background-color: #FFF;
+    overflow: hidden;
+}
+
+    .toolbar .options {
+        text-align: center;
+        padding: .3rem;
+        color: #e49557;
+        font-size: 1.1rem;
+        font-weight: 500;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+        .toolbar .options.active {
+            background: #fefaf7;
+            color: #e49557;
+            border: 3px solid #e49557;
+        }
+
+        .toolbar .options .img-content {
+            padding: 0 5px 5px 5px;
+        }
+
+            .toolbar .options .img-content img {
+                height: 50px;
+                width: auto;
+            }
+
+.dot-content {
+    position: relative;
+    padding-left: 30px;
+    color: #e49557;
+    font-size: 1.1rem;
+    font-weight: bold
+}
+
+    .dot-content .dot {
+        display: inline-block;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        overflow: hidden;
+        position: absolute;
+        top: 3px;
+        left: 0;
+    }
+
+        .dot-content .dot.green {
+            background: #0ede16;
+        }
+
+        .dot-content .dot.blue {
+            background: #469bff;
+        }
+
+.s-table {
+    border-radius: 10px;
+    background: #FFF !important;
+    font-size: 1.1rem;
+    font-weight: 500;
+    overflow: hidden;
+}
+
+    .s-table .vacant {
+        border-bottom: 10px solid #0ede16
+    }
+
+    .s-table .odered {
+        border-bottom: 10px solid #469bff
+    }
+
+    .s-table .disable {
+        border-bottom: 10px solid #ff0000ff
+    }
+
+    .s-table .content {
+        height: 150px;
+        border: 5px solid #00000060;
+    }
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.quantity-ip {
+    border: 1px solid #e49557;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+    .quantity-ip span {
+        text-align: center;
+        padding: 0 5px;
+    }
+
+        .quantity-ip span.cursor-pointer {
+            padding: 0 10px;
+            font-weight: bold;
+            background: #00000040
+        }
+
+.btn-primary, .page-item.active .page-link {
+    background-color: #e49557;
+    border-color: #e49557;
+}
+
+    .btn-primary:hover, .btn-primary:active, .page-item.active .page-link:hover, .page-item.active .page-link:active {
+        background-color: #e49557 !important;
+        border-color: #e49557 !important;
+    }
+
+    .btn-primary:focus, .page-item.active .page-link:focus {
+        box-shadow: 0 0 0 .2rem #e49557;
+    }
