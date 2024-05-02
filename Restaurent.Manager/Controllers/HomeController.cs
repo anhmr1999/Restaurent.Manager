@@ -28,5 +28,10 @@ namespace Restaurent.Manager.Controllers
         {
             return PartialView();
         }
+
+        public IActionResult PaymentModal()
+        {
+            return PartialView();
+        }
     }
 }

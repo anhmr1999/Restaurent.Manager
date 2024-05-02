@@ -19,6 +19,18 @@ $(document).on('click', '.btn-add-modal', function (e) {
     });
 });
 
+$(document).on('click', '.payment-button', function (e) {
+    e.preventDefault();
+    var url = $(this).attr('href');
+    $.ajax({
+        url: url
+    }).done((res) => {
+        $('#modal').find('.modal-dialog').addClass('modal-lg');
+        $('#modal-container').html(res);
+        $('#modal').modal('show');
+    });
+});
+
 $(document).on('click', '.role-button', function (e) {
     e.preventDefault();
     $('.role-button').removeClass('active');

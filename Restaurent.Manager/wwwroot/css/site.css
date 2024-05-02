@@ -82,6 +82,10 @@ body {
         background: #2e8b57
     }
 
+.order-dish{
+    background: #FFF
+}
+
 .modal-content {
     overflow: hidden;
     border-radius: 10px;
