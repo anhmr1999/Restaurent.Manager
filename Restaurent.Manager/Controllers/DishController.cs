@@ -8,5 +8,10 @@ namespace Restaurent.Manager.Controllers
         {
             return View();
         }
+
+        public IActionResult AddModal()
+        {
+            return PartialView();
+        }
     }
 }

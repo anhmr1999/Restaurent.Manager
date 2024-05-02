@@ -1,0 +1,74 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="pt-3">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="d-flex">
+                <div class="toolbar">
+                    <div class="row m-0">
+                        <div class="col-sm-6 options active"><span>In progress</span></div>
+                        <div class="col-sm-6 options"><span>Done</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-0">
+                @for (int i = 0; i < 5; i++)
+                {
+                    <div class="py-2 my-1 px-3 order-border @(i == 0 ? "active" : "")">
+                        <div class="d-flex">
+                            <h4 style="flex: 1; margin: 0">Order: #1</h4>
+                            <span>18:00</span>
+                        </div>
+                        <label class="m-0">Table: <strong>T1</strong></label>
+                        <div class="d-flex">
+                            <div style="flex: 1">Items: 4</div>
+                            <div style="flex: 1" class="text-right">500.000đ</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-5 d-none d-md-block">
+            <div class="order-detail p-3">
+                <div class="d-flex">
+                    <div style="flex: 1">
+                        <label>Order Id</label>
+                        <h3>#1233</h3>
+                    </div>
+                    <div class="text-right">
+                        <label>18:00</label>
+                        <label class="d-block">Table: <strong>T1</strong></label>
+                    </div>
+                </div>
+                <div class="dish-in-table">
+                    <div class="border-bottom py-2">
+                        <h4 class="mb-0">Tên món</h4>
+                        <label class="mb-0">Quantity: <strong>2</strong></label>
+                        <div class="d-flex">
+                            <span style="flex: 1; display: inline-block"></span>
+                            <span class="dish-status done">Done</span>
+                        </div>
+                    </div>
+                    <div class="border-bottom py-2">
+                        <h4 class="mb-0">Tên món</h4>
+                        <label class="mb-0">Quantity: <strong>2</strong></label>
+                        <div class="d-flex">
+                            <span style="flex: 1; display: inline-block"></span>
+                            <span class="dish-status inprogres">In progress</span>
+                        </div>
+                    </div>
+                    <div class="border-bottom py-2">
+                        <h4 class="mb-0">Tên món</h4>
+                        <label class="mb-0">Quantity: <strong>2</strong></label>
+                        <div class="d-flex">
+                            <span style="flex: 1; display: inline-block" class="text-warning">Note: .................</span>
+                            <span class="dish-status todo">To do</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,6 +9,11 @@ namespace Restaurent.Manager.Controllers
             return View();
         }
 
+        public IActionResult Chef()
+        {
+            return View();
+        }
+
         public IActionResult Menu()
         {
             return View();

@@ -36,6 +36,9 @@
                         <li class="nav-item">
                             <a class="nav-link @(Url.Action() == Url.Action("Index", "Dish") ? "active" : "")" asp-controller="Dish" asp-action="Index">Dish</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(Url.Action() == Url.Action("Index", "Table") ? "active" : "")" asp-controller="Table" asp-action="Index">Table</a>
+                        </li>
                     </ul>
                     <div class="navbar-nav flex-grow-1">
                         <a href="#" class="nav-link"><img src="~/images/icons/bell.png" height="28px" /></a>

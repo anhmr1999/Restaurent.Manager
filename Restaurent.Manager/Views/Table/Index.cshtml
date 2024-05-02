@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Order Page";
+    ViewData["Title"] = "Table Page";
 }
 
 <div class="pt-3">
@@ -8,18 +8,16 @@
             <div class="row">
                 <div class="col-4 col-sm-4 col-md-4 form-group">
                     <select class="form-control">
-                        <option> -- All dish -- </option>
-                        <option value="1"> -- Salad -- </option>
-                        <option value="2"> -- Beef -- </option>
-                        <option value="3"> -- Desserts -- </option>
-                        <option value="4"> -- Drinks -- </option>
+                        <option> -- All table -- </option>
+                        <option value="true"> -- Table can use -- </option>
+                        <option value="false"> -- Table disabled -- </option>
                     </select>
                 </div>
                 <div class="col-4 col-sm-4 col-md-4 form-group">
                     <input class="form-control" placeholder="search order..." />
                 </div>
                 <div class="col-4 col-sm-4 col-md-4 form-group text-right">
-                    <a class="btn btn-primary btn-add-modal" href="@Url.Action("AddModal", "Dish")">Create new</a>
+                    <a class="btn btn-primary btn-add-modal" href="@Url.Action("AddModal", "Table")">Create new</a>
                 </div>
             </div>
         </div>
@@ -30,10 +28,8 @@
                         <tr>
                             <th class="text-center">ID</th>
                             <th class="text-center">Name</th>
-                            <th class="text-center">Type</th>
-                            <th class="text-center">Price</th>
                             <th class="text-center">Status</th>
-                            <th class="text-center"></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,23 +37,18 @@
                         {
                             <tr>
                                 <td class="text-center">#25615</td>
-                                <td class="text-center">Fruid salad</td>
-                                <td class="text-center">Salad</td>
-                                <td class="text-center">200.000đ</td>
+                                <td class="text-center">T@(i + 1)</td>
                                 <td class="text-center">
                                     @if (i % 2 == 0)
                                     {
-                                        <strong class="text-danger">Sold out</strong>
+                                        <strong class="text-danger">Disabled</strong>
                                     }
                                     else
                                     {
-                                        <strong class="text-success">Served</strong>
+                                        <strong class="text-success">Can use</strong>
                                     }
                                 </td>
-                                <td class="text-right">
-                                    <img src="/images/icons/pencil.png" class="cursor-pointer" width="20" height="20" />
-                                    <img src="/images/icons/trash.png" class="cursor-pointer ml-2" width="20" height="20" />
-                                </td>
+                                <td class="text-right"><img src="/images/icons/pencil.png" class="cursor-pointer" width="20" height="20" /></td>
                             </tr>
                         }
                     </tbody>

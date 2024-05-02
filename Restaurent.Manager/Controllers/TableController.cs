@@ -2,7 +2,7 @@
 
 namespace Restaurent.Manager.Controllers
 {
-    public class EmployeeController : Controller
+    public class TableController : Controller
     {
         public IActionResult Index()
         {
