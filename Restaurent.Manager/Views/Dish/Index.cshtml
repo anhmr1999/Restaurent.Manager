@@ -1,27 +1,58 @@
-﻿@{
+﻿@model Restaurent.Manager.Models.PagingModel<Restaurent.Manager.Models.Datas.Food>
+@{
     ViewData["Title"] = "Order Page";
 }
 
 <div class="pt-3">
     <div class="row">
         <div class="col-md-12">
-            <div class="row">
-                <div class="col-4 col-sm-4 col-md-4 form-group">
-                    <select class="form-control">
-                        <option> -- All dish -- </option>
-                        <option value="1"> -- Salad -- </option>
-                        <option value="2"> -- Beef -- </option>
-                        <option value="3"> -- Desserts -- </option>
-                        <option value="4"> -- Drinks -- </option>
-                    </select>
+           <form>
+                <div class="row">
+                    <div class="col-4 col-sm-4 col-md-4 form-group">
+                        <select class="form-control search-val" name="type">
+                            <option value=""> -- All dish -- </option>
+                            @if (ViewData["type"]?.ToString() == "1")
+                            {
+                                <option value="1" selected> -- Salad -- </option>
+                            }
+                            else
+                            {
+                                <option value="1"> -- Salad -- </option>
+                            }
+                            @if (ViewData["type"]?.ToString() == "2")
+                            {
+                                <option value="2" selected> -- Beef -- </option>
+                            }
+                            else
+                            {
+                                <option value="2"> -- Beef -- </option>
+                            }
+                            @if (ViewData["type"]?.ToString() == "3")
+                            {
+                                <option value="3" selected> -- Desserts -- </option>
+                            }
+                            else
+                            {
+                                <option value="3"> -- Desserts -- </option>
+                            }
+                            @if (ViewData["type"]?.ToString() == "4")
+                            {
+                                <option value="4" selected> -- Drinks -- </option>
+                            }
+                            else
+                            {
+                                <option value="4"> -- Drinks -- </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-4 col-sm-4 col-md-4 form-group">
+                        <input class="form-control search-val" placeholder="search order..." name="searchKey" value="@ViewData["searchKey"]" />
+                    </div>
+                    <div class="col-4 col-sm-4 col-md-4 form-group text-right">
+                        <a class="btn btn-primary btn-add-modal" href="@Url.Action("AddModal", "Dish")">Create new</a>
+                    </div>
                 </div>
-                <div class="col-4 col-sm-4 col-md-4 form-group">
-                    <input class="form-control" placeholder="search order..." />
-                </div>
-                <div class="col-4 col-sm-4 col-md-4 form-group text-right">
-                    <a class="btn btn-primary btn-add-modal" href="@Url.Action("AddModal", "Dish")">Create new</a>
-                </div>
-            </div>
+           </form>
         </div>
         <div class="col-md-12 mt-3">
             <div class="table-responsive bg-white" style="border-radius: 10px; overflow: hidden;">
@@ -37,15 +68,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @for (var i = 0; i < 10; i++)
+                        @foreach (var item in Model.Datas)
                         {
                             <tr>
-                                <td class="text-center">#25615</td>
-                                <td class="text-center">Fruid salad</td>
-                                <td class="text-center">Salad</td>
-                                <td class="text-center">200.000đ</td>
+                                <td class="text-center">#@item.Id</td>
+                                <td class="text-center">@item.Name</td>
                                 <td class="text-center">
-                                    @if (i % 2 == 0)
+                                    @if (item.TypeId == 1)
+                                    {
+                                        <span>Salad</span>
+                                    }
+                                    else if (item.TypeId == 2)
+                                    {
+                                        <span>Beef</span>
+                                    }
+                                    else if (item.TypeId == 3)
+                                    {
+                                        <span>Desserts</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Drinks</span>
+                                    }
+                                </td>
+                                <td class="text-center">@item.Price.FormatCurrency()</td>
+                                <td class="text-center">
+                                    @if (!item.Status)
                                     {
                                         <strong class="text-danger">Sold out</strong>
                                     }
@@ -63,9 +111,12 @@
                     </tbody>
                 </table>
                 <ul class="pagination justify-content-center mb-1 pt-1" style="border-top: 2px solid #00000030">
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    @for (int i = 1; i <= Model.TotalPage; i++)
+                    {
+                        <li class="page-item @(i == Model.Page ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", "Dish", new { searchKey = ViewData["searchKey"], type = ViewData["type"], page = i })">@i</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>

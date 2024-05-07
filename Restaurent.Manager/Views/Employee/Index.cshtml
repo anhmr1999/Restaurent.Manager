@@ -1,25 +1,41 @@
-﻿@{
+﻿@model Restaurent.Manager.Models.PagingModel<Restaurent.Manager.Models.Datas.User>
+@{
     ViewData["Title"] = "Employee Page";
 }
 
 <div class="pt-3">
     <div class="row">
         <div class="col-md-12">
-            <div class="row">
-                <div class="col-4 col-sm-4 col-md-4 form-group">
-                    <select class="form-control">
-                        <option> -- All user -- </option>
-                        <option> -- Waiter -- </option>
-                        <option> -- Chef -- </option>
-                    </select>
+            <form>
+                <div class="row">
+                    <div class="col-4 col-sm-4 col-md-4 form-group">
+                        <select class="form-control search-val" name="role">
+                            <option value=""> -- All user -- </option>
+                            @if (ViewData["role"]?.ToString() == "waiter")
+                            {
+                                <option value="waiter" selected> -- Waiter -- </option>
+                                <option value="chef"> -- Chef -- </option>
+                            }
+                            else if (ViewData["role"]?.ToString() == "chef")
+                            {
+                                <option value="waiter"> -- Waiter -- </option>
+                                <option value="chef" selected> -- Chef -- </option>
+                            }
+                            else
+                            {
+                                <option value="waiter"> -- Waiter -- </option>
+                                <option value="chef"> -- Chef -- </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-4 col-sm-4 col-md-4 form-group">
+                        <input class="form-control search-val" placeholder="search order..." name="searchKey" value="@ViewData["searchKey"]" />
+                    </div>
+                    <div class="col-4 col-sm-4 col-md-4 form-group text-right">
+                        <a class="btn btn-primary btn-add-modal" href="@Url.Action("AddModal", "Employee")">Create new</a>
+                    </div>
                 </div>
-                <div class="col-4 col-sm-4 col-md-4 form-group">
-                    <input class="form-control" placeholder="search order..." />
-                </div>
-                <div class="col-4 col-sm-4 col-md-4 form-group text-right">
-                    <a class="btn btn-primary btn-add-modal" href="@Url.Action("AddModal", "Employee")">Create new</a>
-                </div>
-            </div>
+            </form>
         </div>
         <div class="col-md-12 mt-3">
             <div class="table-responsive bg-white" style="border-radius: 10px; overflow: hidden;">
@@ -34,13 +50,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @for (var i = 0; i < 10; i++)
+                        @foreach (var item in Model.Datas)
                         {
                             <tr>
-                                <td class="text-center">#25615</td>
-                                <td class="text-center">Nguyễn Văn A</td>
-                                <td class="text-center">Waiter</td>
-                                <td class="text-center">nguyenvana@gmail.com</td>
+                                <td class="text-center">#@item.Id</td>
+                                <td class="text-center">@item.Name</td>
+                                <td class="text-center">@item.Role</td>
+                                <td class="text-center">@item.Email</td>
                                 <td class="text-right">
                                     <img src="/images/icons/pencil.png" class="cursor-pointer" width="20" height="20"/>
                                     <img src="/images/icons/trash.png" class="cursor-pointer ml-2" width="20" height="20" />
@@ -50,9 +66,12 @@
                     </tbody>
                 </table>
                 <ul class="pagination justify-content-center mb-1 pt-1" style="border-top: 2px solid #00000030">
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    @for (int i = 1; i <= Model.TotalPage; i++)
+                    {
+                        <li class="page-item @(i == Model.Page ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", "Employee", new { searchKey = ViewData["searchKey"], role = ViewData["role"], page = i })">@i</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>

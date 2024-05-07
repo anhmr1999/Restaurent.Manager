@@ -1,25 +1,43 @@
-﻿@{
+﻿@model Restaurent.Manager.Models.PagingModel<Restaurent.Manager.Models.Datas.Bill>
+@{
     ViewData["Title"] = "Order Page";
+    var createdAt = (DateTime?)ViewData["createdDate"];
+    var status = (bool?)ViewData["status"];
 }
 
 <div class="pt-3">
     <div class="row">
         <div class="col-md-12">
-            <div class="row">
-                <div class="col-4 col-sm-4 col-md-4 form-group">
-                    <select class="form-control">
-                        <option> -- All orders -- </option>
-                        <option> -- Paid orders -- </option>
-                        <option> -- Unpaid orders -- </option>
-                    </select>
+           <form>
+                <div class="row">
+                    <div class="col-4 col-sm-4 col-md-4 form-group">
+                        <select class="form-control search-val" name="status">
+                            <option value=""> -- All orders -- </option>
+                            @if (status == true)
+                            {
+                                <option value="true" selected> -- Paid orders -- </option>
+                                <option value="false"> -- Unpaid orders -- </option>
+                            }
+                            else if (status == false)
+                            {
+                                <option value="true"> -- Paid orders -- </option>
+                                <option value="false" selected> -- Unpaid orders -- </option>
+                            }
+                            else
+                            {
+                                <option value="true"> -- Paid orders -- </option>
+                                <option value="false"> -- Unpaid orders -- </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-4 col-sm-4 col-md-4 form-group">
+                        <input type="date" class="form-control search-val" name="createdDate" value="@createdAt?.ToString("yyyy-MM-dd")" placeholder="sort by date" />
+                    </div>
+                    <div class="col-4 col-sm-4 col-md-4 form-group">
+                        <input class="form-control search-val" placeholder="search order..." name="searchKey" value="@ViewData["searchKey"]" />
+                    </div>
                 </div>
-                <div class="col-4 col-sm-4 col-md-4 form-group">
-                    <input type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" placeholder="sort by date"/>
-                </div>
-                <div class="col-4 col-sm-4 col-md-4 form-group">
-                    <input class="form-control" placeholder="search order..."/>
-                </div>
-            </div>
+           </form>
         </div>
         <div class="col-md-12 mt-3">
             <div class="table-responsive bg-white" style="border-radius: 10px; overflow: hidden;">
@@ -34,15 +52,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @for (var i = 0; i < 10; i++)
+                        @foreach (var item in Model.Datas)
                         {
                             <tr>
-                                <td class="text-center">#25615</td>
-                                <td class="text-center">T@(i+1)</td>
-                                <td class="text-center">@DateTime.Now.ToShortDateString()</td>
-                                <td class="text-center">500.000đ</td>
+                                <td class="text-center">#@item.Id</td>
+                                <td class="text-center">@item.Table.Name</td>
+                                <td class="text-center">@item.CreatedAt.ToShortDateString()</td>
+                                <td class="text-center">@item.Total.FormatCurrency()</td>
                                 <td class="text-center">
-                                    @if(i%2==0){
+                                    @if (!item.PaidAt.HasValue)
+                                    {
                                         <strong class="text-danger">Unpaid</strong>
                                     }
                                     else
@@ -55,9 +74,12 @@
                     </tbody>
                 </table>
                 <ul class="pagination justify-content-center mb-1 pt-1" style="border-top: 2px solid #00000030">
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    @for (int i = 1; i <= Model.TotalPage; i++)
+                    {
+                        <li class="page-item @(i == Model.Page ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", "Bill", new { searchKey = ViewData["searchKey"], status, createdAt, page = i })">@i</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
