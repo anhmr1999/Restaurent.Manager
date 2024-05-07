@@ -25,7 +25,7 @@
                             <a class="nav-link @(Url.Action() == Url.Action("Index", "Home") ? "active" : "")" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @(Url.Action() == Url.Action("Menu", "Home") ? "active" : "")" asp-controller="Home" asp-action="Menu">Menu</a>
+                            <a class="nav-link @(Url.Action() == Url.Action("Menu", "Home") || Url.Action() == Url.Action("Bill", "Home") ? "active" : "")" asp-controller="Home" asp-action="Menu">Menu</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @(Url.Action() == Url.Action("Index", "Bill") ? "active" : "")" asp-controller="Bill" asp-action="Index">Order</a>
@@ -75,9 +75,7 @@
                 <button type="button" class="close position-absolute" data-dismiss="modal" aria-label="Close" style="right: 5px; top: 0; z-index: 1">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <div id="modal-container">
-
-                </div>
+                <div id="modal-container"></div>
             </div>
         </div>
     </div>
