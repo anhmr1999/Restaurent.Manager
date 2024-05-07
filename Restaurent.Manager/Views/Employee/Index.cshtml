@@ -46,6 +46,8 @@
                             <th class="text-center">Full name</th>
                             <th class="text-center">Role</th>
                             <th class="text-center">Email</th>
+                            <th class="text-center">Phone</th>
+                            <th class="text-center">Birthday</th>
                             <th class="text-center"></th>
                         </tr>
                     </thead>
@@ -57,6 +59,8 @@
                                 <td class="text-center">@item.Name</td>
                                 <td class="text-center">@item.Role</td>
                                 <td class="text-center">@item.Email</td>
+                                <td class="text-center">@item.Phone</td>
+                                <td class="text-center">@item.Birthday?.ToString("dd-MM-yyyy")</td>
                                 <td class="text-right">
                                     <img src="/images/icons/pencil.png" class="cursor-pointer" width="20" height="20"/>
                                     <img src="/images/icons/trash.png" class="cursor-pointer ml-2" width="20" height="20" />

@@ -6,8 +6,8 @@ namespace Restaurent.Manager
     {
         public static string FormatCurrency(this double amount)
         {
-            CultureInfo cultureInfo = new CultureInfo("vi-VN");
-            return string.Format(cultureInfo, "{0:C0}", amount);
+            //CultureInfo cultureInfo = new CultureInfo("vi-VN");
+            return $"{string.Format("{0:#,0}", amount)} đ";
         }
     }
 }

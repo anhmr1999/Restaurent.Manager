@@ -60,7 +60,8 @@
                     <thead>
                         <tr>
                             <th class="text-center">ID</th>
-                            <th class="text-center">Name</th>
+                            <th>Name</th>
+                            <th>Description</th>
                             <th class="text-center">Type</th>
                             <th class="text-center">Price</th>
                             <th class="text-center">Status</th>
@@ -72,7 +73,12 @@
                         {
                             <tr>
                                 <td class="text-center">#@item.Id</td>
-                                <td class="text-center">@item.Name</td>
+                                <td>@item.Name</td>
+                                <td>
+                                    <div style="max-width: 450px; text-wrap: nowrap; overflow: hidden; text-overflow: ellipsis">
+                                        @item.Description
+                                    </div>
+                                </td>
                                 <td class="text-center">
                                     @if (item.TypeId == 1)
                                     {
