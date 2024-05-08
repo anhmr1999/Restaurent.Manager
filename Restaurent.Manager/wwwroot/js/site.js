@@ -75,16 +75,16 @@ $(document).on('click', '.role-button', function (e) {
     $('#role-ip').val(role);
 });
 
-$(document).on('click', '#avt-d', function () {
-    $('#avt-input').trigger('click');
+$(document).on('click', '#img-d', function () {
+    $('#img-input').trigger('click');
 });
 
-$(document).on('change', '#avt-input', function (e) {
+$(document).on('change', '#img-input', function (e) {
     var file = e.target.files[0];
     if (!file)
-        $('#avt-d').attr('src', '/images/no-image.png');
+        $('#img-d').attr('src', '/images/no-image.png');
     else
-        $('#avt-d').attr('src', (window.URL ? URL : webkitURL).createObjectURL(file));
+        $('#img-d').attr('src', (window.URL ? URL : webkitURL).createObjectURL(file));
 });
 
 $(document).on('click', '.btn-remove', function (e) {

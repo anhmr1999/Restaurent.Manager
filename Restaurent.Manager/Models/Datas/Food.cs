@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Restaurent.Manager.Models.Datas
 {
@@ -12,5 +13,8 @@ namespace Restaurent.Manager.Models.Datas
         public string Description { get; set; }
         public bool Status { get; set; } = true;
         public int TypeId { get; set; }
+
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
     }
 }

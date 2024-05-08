@@ -7,8 +7,8 @@
             <div class="col-9">
                 <div class="d-flex">
                     <div class="avt-image border-radius">
-                        <img src="@(!string.IsNullOrEmpty(Model.Avatar) ? Model.Avatar : "/images/no-image.png")" class="cursor-pointer" id="avt-d"/>
-                        <input type="file" accept=".png,.jpg" name="avatarFile" id="avt-input"/>
+                        <img src="@(!string.IsNullOrEmpty(Model.Avatar) ? Model.Avatar : "/images/no-image.png")" class="cursor-pointer" id="img-d"/>
+                        <input type="file" accept=".png,.jpg" name="avatarFile" class="d-none" id="img-input"/>
                     </div>
                     <div class="pl-3" style="flex: 1">
                         <label>Fullname</label>

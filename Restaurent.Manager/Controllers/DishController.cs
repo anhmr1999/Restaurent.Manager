@@ -39,5 +39,58 @@ namespace Restaurent.Manager.Controllers
                 return NotFound();
             return PartialView(dish);
         }
+
+        [HttpPost]
+        public IActionResult Save(Food model)
+        {
+            var dish = context.Food.FirstOrDefault(x => x.Id == model.Id);
+            if (dish == null)
+            {
+                dish = new Food
+                {
+                    Name = model.Name,
+                    Price = model.Price,
+                    Description = model.Description,
+                    Status = model.Status,
+                    TypeId = model.TypeId
+                };
+            }
+            else
+            {
+                dish.Name = model.Name;
+                dish.Price = model.Price;
+                dish.Description = model.Description;
+                dish.Status = model.Status;
+                dish.TypeId = model.TypeId;
+                context.Food.Update(dish);
+            }
+            if (model.ImageFile != null)
+            {
+                var path = "images/" + model.ImageFile.FileName;
+                var uploadPath = Path.Combine("wwwroot", path);
+                using (var stream = System.IO.File.Open(uploadPath, FileMode.OpenOrCreate))
+                {
+                    model.ImageFile.CopyTo(stream);
+                }
+                dish.Image = "/" + path;
+            }
+            if (model.Id == default)
+                context.Food.Add(dish);
+            else
+                context.Food.Update(dish);
+            context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Remove(int id)
+        {
+            var dish = context.Food.FirstOrDefault(x => x.Id == id);
+            if (dish == null)
+                return RedirectToAction(nameof(Index));
+
+            context.Food.Remove(dish);
+            context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
