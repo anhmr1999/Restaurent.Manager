@@ -7,7 +7,7 @@ namespace Restaurent.Manager.Models.Datas
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public bool Status { get; set; }
+        public bool Status { get; set; } = true;
 
         public virtual IEnumerable<Bill> Bills { get; set; }
     }

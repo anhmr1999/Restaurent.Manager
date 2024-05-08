@@ -41,5 +41,23 @@ namespace Restaurent.Manager.Controllers
             
             return PartialView(tbl);
         }
+
+        [HttpPost]
+        public IActionResult Save(Table model)
+        {
+            var tbl = context.Table.FirstOrDefault(x => x.Id == model.Id);
+            if (tbl != null)
+            {
+                tbl.Name = model.Name;
+                tbl.Status = model.Status;
+                context.Table.Update(tbl);
+            }
+            else
+            {
+                context.Table.Add(model);
+            }
+            context.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }
