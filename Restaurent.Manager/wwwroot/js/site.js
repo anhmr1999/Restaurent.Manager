@@ -23,7 +23,7 @@ $(document).on('click', '.options', function (e) {
         $('.table-view').removeClass('d-none');
 });
 
-$(document).on('click', '.btn-add-modal', function (e) {
+$(document).on('click', '.btn-add-modal, .btn-edit-modal', function (e) {
     e.preventDefault();
     var url = $(this).attr('href');
     $.ajax({
@@ -71,6 +71,25 @@ $(document).on('click', '.role-button', function (e) {
     e.preventDefault();
     $('.role-button').removeClass('active');
     $(this).addClass('active');
+    var role = $(this).data('role');
+    $('#role-ip').val(role);
+});
+
+$(document).on('click', '#avt-d', function () {
+    $('#avt-input').trigger('click');
+});
+
+$(document).on('change', '#avt-input', function (e) {
+    var file = e.target.files[0];
+    if (!file)
+        $('#avt-d').attr('src', '/images/no-image.png');
+    else
+        $('#avt-d').attr('src', (window.URL ? URL : webkitURL).createObjectURL(file));
+});
+
+$(document).on('click', '.btn-remove', function (e) {
+    if (!confirm('Are you sure?'))
+        e.preventDefault();
 });
 
 $('#modal').on('hidden.bs.modal', (e) => {

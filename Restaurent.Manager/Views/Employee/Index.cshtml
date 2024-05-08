@@ -32,7 +32,7 @@
                         <input class="form-control search-val" placeholder="search order..." name="searchKey" value="@ViewData["searchKey"]" />
                     </div>
                     <div class="col-4 col-sm-4 col-md-4 form-group text-right">
-                        <a class="btn btn-primary btn-add-modal" href="@Url.Action("AddModal", "Employee")">Create new</a>
+                        <a class="btn btn-primary btn-add-modal" href="@Url.Action("AddOrEditModal", "Employee")">Create new</a>
                     </div>
                 </div>
             </form>
@@ -62,8 +62,12 @@
                                 <td class="text-center">@item.Phone</td>
                                 <td class="text-center">@item.Birthday?.ToString("dd-MM-yyyy")</td>
                                 <td class="text-right">
-                                    <img src="/images/icons/pencil.png" class="cursor-pointer" width="20" height="20"/>
-                                    <img src="/images/icons/trash.png" class="cursor-pointer ml-2" width="20" height="20" />
+                                    <a class="btn-edit-modal" href="@Url.Action("AddOrEditModal", "Employee", new {empId = item.Id})">
+                                        <img src="/images/icons/pencil.png" class="cursor-pointer" width="20" height="20" />
+                                    </a>
+                                    <a class="btn-remove" href="@Url.Action("Remove", "Employee", new {id = item.Id})" data-model="employee">
+                                        <img src="/images/icons/trash.png" class="cursor-pointer ml-2" width="20" height="20" />
+                                    </a>
                                 </td>
                             </tr>
                         }

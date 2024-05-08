@@ -6,7 +6,7 @@
 <div class="pt-3">
     <div class="row">
         <div class="col-md-12">
-           <form>
+            <form>
                 <div class="row">
                     <div class="col-4 col-sm-4 col-md-4 form-group">
                         <select class="form-control search-val" name="type">
@@ -49,10 +49,10 @@
                         <input class="form-control search-val" placeholder="search order..." name="searchKey" value="@ViewData["searchKey"]" />
                     </div>
                     <div class="col-4 col-sm-4 col-md-4 form-group text-right">
-                        <a class="btn btn-primary btn-add-modal" href="@Url.Action("AddModal", "Dish")">Create new</a>
+                        <a class="btn btn-primary btn-add-modal" href="@Url.Action("AddOrEditModal", "Dish")">Create new</a>
                     </div>
                 </div>
-           </form>
+            </form>
         </div>
         <div class="col-md-12 mt-3">
             <div class="table-responsive bg-white" style="border-radius: 10px; overflow: hidden;">
@@ -99,17 +99,19 @@
                                 </td>
                                 <td class="text-center">@item.Price.FormatCurrency()</td>
                                 <td class="text-center">
-                                    @if (!item.Status)
-                                    {
-                                        <strong class="text-danger">Sold out</strong>
-                                    }
-                                    else
+                                    @if (item.Status)
                                     {
                                         <strong class="text-success">Served</strong>
                                     }
+                                    else
+                                    {
+                                        <strong class="text-danger">Sold out</strong>
+                                    }
                                 </td>
                                 <td class="text-right">
-                                    <img src="/images/icons/pencil.png" class="cursor-pointer" width="20" height="20" />
+                                    <a class="btn-edit-modal" href="@Url.Action("AddOrEditModal", "Dish", new {dishId = item.Id})">
+                                        <img src="/images/icons/pencil.png" class="cursor-pointer" width="20" height="20" />
+                                    </a>
                                     <img src="/images/icons/trash.png" class="cursor-pointer ml-2" width="20" height="20" />
                                 </td>
                             </tr>

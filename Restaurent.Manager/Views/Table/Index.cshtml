@@ -34,7 +34,7 @@
                         <input class="form-control search-val" placeholder="search table..." name="searchKey" value="@ViewData["searchKey"]" />
                     </div>
                     <div class="col-4 col-sm-4 col-md-4 form-group text-right">
-                        <a class="btn btn-primary btn-add-modal" href="@Url.Action("AddModal", "Table")">Create new</a>
+                        <a class="btn btn-primary btn-add-modal" href="@Url.Action("AddOrEditModal", "Table")">Create new</a>
                     </div>
                 </div>
             </form>
@@ -66,7 +66,11 @@
                                         <strong class="text-success">Can use</strong>
                                     }
                                 </td>
-                                <td class="text-right"><img src="/images/icons/pencil.png" class="cursor-pointer" width="20" height="20" /></td>
+                                <td class="text-right">
+                                    <a class="btn-edit-modal" href="@Url.Action("AddOrEditModal", "Table", new {tableId = item.Id})">
+                                        <img src="/images/icons/pencil.png" class="cursor-pointer" width="20" height="20" />
+                                    </a>
+                                </td>
                             </tr>
                         }
                     </tbody>

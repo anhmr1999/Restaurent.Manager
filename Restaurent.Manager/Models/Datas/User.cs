@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Restaurent.Manager.Models.Datas
 {
@@ -12,6 +13,9 @@ namespace Restaurent.Manager.Models.Datas
         public string Phone { get; set; }
         public DateTime? Birthday { get; set; }
         public string Password { get; set; }
-        public string Role { get; set; }
+        public string Role { get; set; } = "waiter";
+
+        [NotMapped]
+        public IFormFile AvatarFile { get; set; }
     }
 }

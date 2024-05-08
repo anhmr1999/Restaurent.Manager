@@ -30,9 +30,68 @@ namespace Restaurent.Manager.Controllers
             return View(model);
         }
 
-        public IActionResult AddModal()
+        public IActionResult AddOrEditModal(int? empId = null)
         {
-            return PartialView();
+            if (!empId.HasValue)
+                return PartialView(new User());
+
+            var emp = context.User.FirstOrDefault(x => x.Id == empId.Value);
+            if (emp == null)
+                return NotFound();
+            return PartialView(emp);
+        }
+
+        [HttpPost]
+        public IActionResult Save(User model)
+        {
+            var user = context.User.FirstOrDefault(x => x.Id == model.Id);
+            if (user == null)
+            {
+                user = new User
+                {
+                    Name = model.Name,
+                    Email = model.Email,
+                    Phone = model.Phone,
+                    Role = model.Role,
+                    Birthday = model.Birthday,
+                    Password = model.Password,
+                };
+            }
+            else
+            {
+                user.Name = model.Name;
+                user.Email = model.Email;
+                user.Phone = model.Phone;
+                user.Role = model.Role;
+                user.Birthday = model.Birthday;
+                context.User.Update(user);
+            }
+            if (model.AvatarFile != null)
+            {
+                var path = "images/avts/" + model.AvatarFile.FileName;
+                var uploadPath = Path.Combine("wwwroot", path);
+                using(var stream = System.IO.File.Open(uploadPath, FileMode.OpenOrCreate)) { 
+                    model.AvatarFile.CopyTo(stream);
+                }
+                user.Avatar = "/" + path;
+            }
+            if (model.Id == default)
+                context.User.Add(user);
+            else
+                context.User.Update(user);
+            context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Remove(int id)
+        {
+            var emp = context.User.FirstOrDefault(x => x.Id == id);
+            if (emp == null)
+                return RedirectToAction(nameof(Index));
+
+            context.User.Remove(emp);
+            context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

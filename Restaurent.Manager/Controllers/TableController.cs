@@ -30,9 +30,16 @@ namespace Restaurent.Manager.Controllers
             return View(model);
         }
 
-        public IActionResult AddModal()
+        public IActionResult AddOrEditModal(int? tableId = null)
         {
-            return PartialView();
+            if (tableId == null)
+                return PartialView(new Table());
+
+            var tbl = context.Table.FirstOrDefault(x => x.Id == tableId);
+            if (tbl == null)
+                return NotFound();
+            
+            return PartialView(tbl);
         }
     }
 }

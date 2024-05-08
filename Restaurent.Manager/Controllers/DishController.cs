@@ -29,9 +29,15 @@ namespace Restaurent.Manager.Controllers
             return View(model);
         }
 
-        public IActionResult AddModal()
+        public IActionResult AddOrEditModal(int? dishId = null)
         {
-            return PartialView();
+            if (dishId == null)
+                return PartialView(new Food());
+
+            var dish = context.Food.FirstOrDefault(x => x.Id == dishId);
+            if (dish == null)
+                return NotFound();
+            return PartialView(dish);
         }
     }
 }
