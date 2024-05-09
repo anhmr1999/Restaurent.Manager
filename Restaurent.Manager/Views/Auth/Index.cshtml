@@ -24,8 +24,9 @@
                         <div class="form-group">
                             <input class="form-control" placeholder="Email" name="email" value="@Model.Email"/>
                         </div>
-                        <div class="form-group">
-                            <input class="form-control" type="password" name="password" placeholder="Password" />
+                        <div class="form-group position-relative">
+                            <input class="form-control pwd-i" type="password" name="password" placeholder="Password" style="padding-right: 30px;"/>
+                            <img src="~/images/icons/eye.png" class="cursor-pointer position-absolute btn-eye" height="20" style="top: 9px; right: 5px"/>
                         </div>
                         <div class="text-center">
                             <button class="btn btn-primary px-4 font-weight-bold">Log in</button>
@@ -37,6 +38,16 @@
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(document).on('click', '.btn-eye', function (e) {
+            e.preventDefault();
+            $('.pwd-i').attr('type', 'text');
+            $(this).addClass('btn-close-eye').removeClass('btn-eye');
+        }).on('click', '.btn-close-eye', function (e) {
+            e.preventDefault();
+            $('.pwd-i').attr('type', 'password');
+            $(this).addClass('btn-eye').removeClass('btn-close-eye');
+        })
+    </script>
 </body>
 </html>

@@ -1,18 +1,22 @@
 ﻿@model Restaurent.Manager.Models.Datas.Food
 
 <div class="modal-body">
-    <form action="@Url.Action("Save", "Dish")" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="id" value="@Model.Id"/>
+    <form id="dish-form" action="@Url.Action("Save", "Dish")" method="post" enctype="multipart/form-data">
+        <input type="hidden" class="id" name="id" value="@Model.Id"/>
         <div class="row">
             <div class="col-9">
                 <div class="d-flex">
-                    <div class="avt-image">
-                        <img src="@(!string.IsNullOrEmpty(Model.Image) ? Model.Image : "/images/no-image.png")" id="img-d" />
-                        <input type="file" class="d-none" accept=".png,.jpg" name="imageFile" id="img-input" />
+                    <div>
+                        <div class="avt-image">
+                            <img src="@(!string.IsNullOrEmpty(Model.Image) ? Model.Image : "/images/no-image.png")" id="img-d" />
+                            <input type="file" class="d-none" accept=".png,.jpg" name="imageFile" id="img-input" />
+                        </div>
+                        <span class="text-danger dish-img-error" style="font-size: 0.8rem"></span>
                     </div>
                     <div class="pl-3" style="flex: 1">
                         <label>Name</label>
-                        <input class="form-control" placeholder="Dish name" name="name" value="@Model.Name" />
+                        <input class="form-control dish-name" placeholder="Dish name" name="name" value="@Model.Name" />
+                        <span class="text-danger dish-name-error" style="font-size: 0.8rem"></span>
                     </div>
                 </div>
             </div>
@@ -79,7 +83,8 @@
                 <div class="row mb-1">
                     <label class="col-4">Price</label>
                     <div class="col-8">
-                        <input class="form-control form-control-sm" type="number" name="price" value="@Model.Price" />
+                        <input class="form-control form-control-sm dish-price" type="number" name="price" value="@Model.Price" />
+                        <span class="text-danger dish-price-error" style="font-size: 0.8rem"></span>
                     </div>
                 </div>
             </div>

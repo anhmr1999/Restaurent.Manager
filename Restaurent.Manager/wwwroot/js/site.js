@@ -92,6 +92,80 @@ $(document).on('click', '.btn-remove', function (e) {
         e.preventDefault();
 });
 
+$(document).on('submit', '#employee-form', function (e) {
+    var valid = true;
+    if (!$('.emp-name').val()) {
+        valid = false;
+        $('.emp-name-error').html('Name is not empty');
+    } else {
+        $('.emp-name-error').html('');
+    }
+    if (!$('.emp-email').val()) {
+        valid = false;
+        $('.emp-email-error').html('Email is not empty');
+    } else {
+        $('.emp-email-error').html('');
+    }
+    if (!$('.emp-password').val()) {
+        valid = false;
+        $('.emp-password-error').html('Password is not empty');
+    } else {
+        $('.emp-password-error').html('');
+    }
+    if (!$('.emp-dob').val()) {
+        valid = false;
+        $('.emp-dob-error').html('Birthday is not empty');
+    } else {
+        $('.emp-dob-error').html('');
+    }
+    if (!$('.emp-phone').val()) {
+        valid = false;
+        $('.emp-phone-error').html('Phone is not empty');
+    } else {
+        $('.emp-phone-error').html('');
+    }
+    if (!valid)
+        e.preventDefault();
+});
+
+$(document).on('submit', '#dish-form', function (e) {
+    var valid = true;
+    if (!$('.dish-name').val()) {
+        valid = false;
+        $('.dish-name-error').html('Name is not empty');
+    } else {
+        $('.dish-name-error').html('');
+    }
+    
+    if ($('.dish-price').val() <= 0) {
+        valid = false;
+        $('.dish-price-error').html('Price is not empty');
+    } else {
+        $('.dish-price-error').html('');
+    }
+
+    if ($('.id').val() == 0 && $('#img-input')[0].files.length == 0) {
+        valid = false;
+        $('.dish-img-error').html('Image is not choosed');
+    } else {
+        $('.dish-img-error').html('');
+    }
+    if (!valid)
+        e.preventDefault();
+});
+
+$(document).on('submit', '#table-form', function (e) {
+    var valid = true;
+    if (!$('.table-name').val()) {
+        valid = false;
+        $('.table-name-error').html('Name is not empty');
+    } else {
+        $('.table-name-error').html('');
+    }
+    if (!valid)
+        e.preventDefault();
+})
+
 $('#modal').on('hidden.bs.modal', (e) => {
     $('#modal').find('.modal-dialog').removeClass('modal-lg').removeClass('modal-xl').removeClass('.modal-md');
     $('#modal-container').html('');

@@ -1,7 +1,7 @@
 ﻿@model Restaurent.Manager.Models.Datas.User
 
 <div class="modal-body">
-   <form action="@Url.Action("Save", "Employee")" method="post" enctype="multipart/form-data">
+   <form id="employee-form" action="@Url.Action("Save", "Employee")" method="post" enctype="multipart/form-data">
        <input type="hidden" name="id" value="@Model.Id"/>
         <div class="row">
             <div class="col-9">
@@ -12,7 +12,8 @@
                     </div>
                     <div class="pl-3" style="flex: 1">
                         <label>Fullname</label>
-                        <input class="form-control" name="name" placeholder="Nguyen Van A" value="@Model.Name"/>
+                        <input class="form-control emp-name" name="name" placeholder="Nguyen Van A" value="@Model.Name"/>
+                        <span class="text-danger emp-name-error" style="font-size: 0.8rem"></span>
                     </div>
                 </div>
             </div>
@@ -29,25 +30,29 @@
                 <div class="row mb-1">
                     <label class="col-4">Email</label>
                     <div class="col-8">
-                        <input class="form-control form-control-sm" placeholder="@@gmail.com" name="email" value="@Model.Email"/>
+                        <input class="form-control form-control-sm emp-email" placeholder="@@gmail.com" name="email" value="@Model.Email" />
+                        <span class="text-danger emp-email-error" style="font-size: 0.8rem"></span>
                     </div>
                 </div>
                 <div class="row mb-1">
                     <label class="col-4">Password</label>
                     <div class="col-8">
-                        <input class="form-control form-control-sm" type="password" name="password"/>
+                        <input class="form-control form-control-sm emp-password" type="password" name="password"/>
+                        <span class="text-danger emp-password-error" style="font-size: 0.8rem"></span>
                     </div>
                 </div>
                 <div class="row mb-1">
                     <label class="col-4">Date of birth</label>
                     <div class="col-8">
-                        <input class="form-control form-control-sm" type="date" name="birthday" value="@Model.Birthday?.ToString("yyyy-MM-dd")"/>
+                        <input class="form-control form-control-sm emp-dob" type="date" name="birthday" value="@Model.Birthday?.ToString("yyyy-MM-dd")"/>
+                        <span class="text-danger emp-dob-error" style="font-size: 0.8rem"></span>
                     </div>
                 </div>
                 <div class="row">
                     <label class="col-4">Phone</label>
                     <div class="col-8">
-                        <input class="form-control form-control-sm" name="phone" placeholder="xxx xxx xxxx" value="@Model.Phone"/>
+                        <input class="form-control form-control-sm emp-phone" name="phone" placeholder="xxx xxx xxxx" value="@Model.Phone"/>
+                        <span class="text-danger emp-phone-error" style="font-size: 0.8rem"></span>
                     </div>
                 </div>
             </div>
@@ -57,7 +62,7 @@
                 <a href="#" class="btn btn-danger w-100" data-dismiss="modal" aria-label="Close">Cancel</a>
             </div>
             <div class="col-6">
-                <button class="btn btn-success btn-save-employee w-100">Save</button>
+                <button class="btn btn-success w-100">Save</button>
             </div>
         </div>
    </form>

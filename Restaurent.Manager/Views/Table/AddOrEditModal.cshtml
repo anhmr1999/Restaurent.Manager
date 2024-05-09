@@ -1,12 +1,13 @@
 ﻿@model Restaurent.Manager.Models.Datas.Table
 
 <div class="modal-body">
-    <form action="@Url.Action("Save", "Table")" method="post">
+    <form id="table-form" action="@Url.Action("Save", "Table")" method="post">
         <input type="hidden" name="id" value="@Model.Id"/>
         <div class="row">
             <div class="col-9">
                 <label>Name</label>
-                <input class="form-control" placeholder="Table name..." name="name" value="@Model.Name"/>
+                <input class="form-control table-name" placeholder="Table name..." name="name" value="@Model.Name"/>
+                <span class="text-danger table-name-error" style="font-size: 0.8rem"></span>
             </div>
             <div class="col-3">
                 <div class="pt-3">
