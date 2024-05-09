@@ -1,22 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Restaurent.Manager.Models;
 using Restaurent.Manager.Models.Datas;
 
 namespace Restaurent.Manager.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         AppDbContext context = new AppDbContext();
 
         public IActionResult Index()
         {
-            var tables = context.Table.Include(x => x.Bills).ToList();
-            return View(tables);
-        }
+            if (User.IsInRole("Waiter"))
+            {
+                var tables = context.Table.Include(x => x.Bills).ToList();
+                return View("Waiter", tables);
+            } 
+            if (User.IsInRole("Chef"))
+                return View("Chef");
 
-        public IActionResult Chef()
-        {
             return View();
         }
 

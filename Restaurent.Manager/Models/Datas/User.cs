@@ -13,7 +13,7 @@ namespace Restaurent.Manager.Models.Datas
         public string Phone { get; set; }
         public DateTime? Birthday { get; set; }
         public string Password { get; set; }
-        public string Role { get; set; } = "waiter";
+        public string Role { get; set; } = "Waiter";
 
         [NotMapped]
         public IFormFile AvatarFile { get; set; }

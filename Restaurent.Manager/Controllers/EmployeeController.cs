@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Restaurent.Manager.Models;
 using Restaurent.Manager.Models.Datas;
 
 namespace Restaurent.Manager.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class EmployeeController : Controller
     {
         AppDbContext context = new AppDbContext();
@@ -53,9 +55,12 @@ namespace Restaurent.Manager.Controllers
                     Email = model.Email,
                     Phone = model.Phone,
                     Role = model.Role,
-                    Birthday = model.Birthday,
-                    Password = model.Password,
+                    Birthday = model.Birthday
                 };
+                if (string.IsNullOrEmpty(model.Password))
+                    user.Password = "123".HashMd5();
+                else
+                    user.Password = model.Password.HashMd5();
             }
             else
             {
@@ -64,7 +69,8 @@ namespace Restaurent.Manager.Controllers
                 user.Phone = model.Phone;
                 user.Role = model.Role;
                 user.Birthday = model.Birthday;
-                context.User.Update(user);
+                if (!string.IsNullOrEmpty(model.Password))
+                    user.Password = model.Password.HashMd5();
             }
             if (model.AvatarFile != null)
             {

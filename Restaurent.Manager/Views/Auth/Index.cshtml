@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Restaurent.Manager.Models.LoginModel
+@{
     Layout = null;
 }
 
@@ -17,13 +18,14 @@
         <div class="m-auto">
             <div class="login-form">
                 <h2 class="text-center">Log in</h2>
+                <span class="text-danger d-block text-center">@Html.Raw(ViewData["Error"])</span>
                 <div class="pt-3">
                     <form method="post">
                         <div class="form-group">
-                            <input class="form-control" placeholder="Email" />
+                            <input class="form-control" placeholder="Email" name="email" value="@Model.Email"/>
                         </div>
                         <div class="form-group">
-                            <input class="form-control" placeholder="Password" />
+                            <input class="form-control" type="password" name="password" placeholder="Password" />
                         </div>
                         <div class="text-center">
                             <button class="btn btn-primary px-4 font-weight-bold">Log in</button>

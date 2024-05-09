@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Restaurent.Manager.Models
+@{
+    var db = new AppDbContext();
+    var currentId = User.Identity.Name;
+    var currentUser = db.User.FirstOrDefault(x => x.Id.ToString() == currentId);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,32 +31,38 @@
                         <li class="nav-item">
                             <a class="nav-link @(Url.Action() == Url.Action("Index", "Home") ? "active" : "")" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(Url.Action() == Url.Action("Menu", "Home") || Url.Action() == Url.Action("Bill", "Home") ? "active" : "")" asp-controller="Home" asp-action="Menu">Menu</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(Url.Action() == Url.Action("Index", "Bill") ? "active" : "")" asp-controller="Bill" asp-action="Index">Order</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(Url.Action() == Url.Action("Index", "Employee") ? "active" : "")" asp-controller="Employee" asp-action="Index">Employee</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(Url.Action() == Url.Action("Index", "Dish") ? "active" : "")" asp-controller="Dish" asp-action="Index">Dish</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(Url.Action() == Url.Action("Index", "Table") ? "active" : "")" asp-controller="Table" asp-action="Index">Table</a>
-                        </li>
+                        @if (User.IsInRole("Waiter"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(Url.Action() == Url.Action("Menu", "Home") || Url.Action() == Url.Action("Bill", "Home") ? "active" : "")" asp-controller="Home" asp-action="Menu">Menu</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(Url.Action() == Url.Action("Index", "Bill") ? "active" : "")" asp-controller="Bill" asp-action="Index">Order</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Url.Action() == Url.Action("Index", "Employee") ? "active" : "")" asp-controller="Employee" asp-action="Index">Employee</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Url.Action() == Url.Action("Index", "Dish") ? "active" : "")" asp-controller="Dish" asp-action="Index">Dish</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Url.Action() == Url.Action("Index", "Table") ? "active" : "")" asp-controller="Table" asp-action="Index">Table</a>
+                            </li>
+                        }
                     </ul>
                     <div class="navbar-nav flex-grow-1">
                         <a href="#" class="nav-link"><img src="~/images/icons/bell.png" height="28px" /></a>
                         <div class="avt position-relative">
-                            <a href="#"><img src="~/images/no-image.png" height="45px" /></a>
+                            <a href="#"><img src="@(string.IsNullOrEmpty(currentUser?.Avatar) ? "/images/no-image.png" : currentUser.Avatar)" height="45px" /></a>
                             <div class="position-absolute logout-option">
                                 <div class="user-info d-flex mb-2">
-                                    <img src="~/images/no-image.png" height="60px" />
+                                    <img src="@(string.IsNullOrEmpty(currentUser?.Avatar) ? "/images/no-image.png" : currentUser.Avatar)" height="60px" />
                                     <div class="ml-3" style="flex: 1">
-                                        <h4 style="width: 100%; overflow: hidden; text-overflow: ellipsis">Nguyen Van A</h4>
-                                        <span class="role-span admin">Admin</span>
+                                        <h4 style="width: 100%; overflow: hidden; text-overflow: ellipsis">@Html.Raw(currentUser.Name)</h4>
+                                        <span class="role-span @currentUser.Role.ToLower()">@Html.Raw(currentUser.Role)</span>
                                     </div>
                                 </div>
                                 <a href="@Url.Action("Logout", "Auth")" style="color: #000; font-weight: 600">

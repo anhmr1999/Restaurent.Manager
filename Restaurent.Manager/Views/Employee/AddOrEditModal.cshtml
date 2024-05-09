@@ -18,8 +18,8 @@
             </div>
             <div class="col-3">
                 <div class="pt-3">
-                    <span class="role-button cursor-pointer @(Model.Role?.ToLower() == "waiter" ? "active" : "")" data-role="waiter">Waiter</span>
-                    <span class="role-button cursor-pointer mt-2 @(Model.Role?.ToLower() == "chef" ? "active" : "")" data-role="chef">Chef</span>
+                    <span class="role-button cursor-pointer @(Model.Role?.ToLower() == "waiter" ? "active" : "")" data-role="Waiter">Waiter</span>
+                    <span class="role-button cursor-pointer mt-2 @(Model.Role?.ToLower() == "chef" ? "active" : "")" data-role="Chef">Chef</span>
                 </div>
                 <input name="role" value="@Model.Role" id="role-ip" type="hidden"/>
             </div>

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Restaurent.Manager.Models;
 using Restaurent.Manager.Models.Datas;
 
 namespace Restaurent.Manager.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TableController : Controller
     {
         AppDbContext context = new AppDbContext();

@@ -59,13 +59,13 @@ CREATE TABLE [BillRecord](
 GO
 /* DB of User*/
 INSERT INTO [User]([Name], [Email], [Phone], [Birthday], [Password], [Role]) VALUES
-(N'Khanh','admin@gmail.com', '0923654789', '2000/02/14', '41933e60e9c19b866b3d68864727afe7', 'Admin') /* pass: 123456 */
+(N'Khanh','admin@gmail.com', '0923654789', '2000/02/14', 'e10adc3949ba59abbe56e057f20f883e', 'Admin') /* pass: 123456 */
 Go
 INSERT INTO [User]([Name], [Email], [Phone], [Birthday], [Password], [Role]) VALUES
-(N'Dung','waiter@gmail.com', '0923456789', '2003/10/11', '508df4cb2f4d8f80519256258cfb975f', 'Waiter') /* pass: 234567 */
+(N'Dung','waiter@gmail.com', '0923456789', '2003/10/11', 'e10adc3949ba59abbe56e057f20f883e', 'Waiter') /* pass: 123456 */
 Go
 INSERT INTO [User]([Name], [Email], [Phone], [Birthday], [Password], [Role]) VALUES
-(N'Chi','chef@gmail.com', '0963258741', '2006/08/29', '5bd2026f128662763c532f2f4b6f2476', 'Chef') /* pass: 345678 */
+(N'Chi','chef@gmail.com', '0963258741', '2006/08/29', 'e10adc3949ba59abbe56e057f20f883e', 'Chef') /* pass: 123456 */
 Go
 /* DB of food*/
 /* typeid: 1: salad, 2:beefsteak, 3: dessert, 4: drink*/
