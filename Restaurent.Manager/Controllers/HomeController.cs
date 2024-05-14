@@ -11,7 +11,7 @@ namespace Restaurent.Manager.Controllers
     {
         AppDbContext context = new AppDbContext();
 
-        public IActionResult Index(int? choosed = null)
+        public IActionResult Index(int? choosed = null, DateTime? fromDate = null, DateTime? toDate = null, int type = 1)
         {
             if (User.IsInRole("Waiter"))
             {
@@ -20,13 +20,53 @@ namespace Restaurent.Manager.Controllers
             }
             if (User.IsInRole("Chef"))
             {
-                var bills = context.Bill.Include(x => x.Records).Include(x => x.Table).Where(x => x.CreatedAt.Date == DateTime.Now.Date || x.Records.Any(r => r.Status != 3)).ToList();
+                var chefBills = context.Bill.Include(x => x.Records).Include(x => x.Table).Where(x => x.CreatedAt.Date == DateTime.Now.Date || x.Records.Any(r => r.Status != 3)).ToList();
                 if (choosed.HasValue)
-                    ViewData["bill"] = bills.FirstOrDefault(x => x.Id == choosed);
-                return View("Chef", bills);
-            }    
+                    ViewData["bill"] = chefBills.FirstOrDefault(x => x.Id == choosed);
+                return View("Chef", chefBills);
+            }
 
-            return View();
+            var res = new AdminHomeModel();
+            var bills = context.Bill.Where(x => x.CreatedAt.Date == DateTime.Now.Date).ToList();
+            res.Revene = bills.Sum(x => x.Total);
+            res.BillCount = bills.Count();
+            if (fromDate.HasValue)
+                res.FromDate = fromDate.Value;
+            else
+                res.FromDate = DateTime.Now.Date.AddDays(-4);
+            if (toDate.HasValue)
+                res.ToDate = toDate.Value;
+            else
+                res.ToDate = DateTime.Now.Date.AddDays(2);
+
+            res.GroupType = type;
+            var chartBill = context.Bill.Where(x => res.FromDate <= x.CreatedAt && x.CreatedAt <= res.ToDate).ToList();
+            if (type == 1)
+            {
+                var allDate = new List<DateTime>();
+                for (var i = res.FromDate; i <= res.ToDate; i = i.AddDays(1))
+                    allDate.Add(i);
+                res.ChartData = allDate.GroupJoin(chartBill, data => data.Date, bill => bill.CreatedAt.Date,
+                    (d, bills) => new { key = d.Date, value = bills.Sum(x => x.Total) }).ToDictionary(x => x.key.ToString("dd-MM-yyyy"), x => x.value);
+            }    
+            else if (type == 2)
+            {
+                var allMonth = new List<DateTime>();
+                for (var i = new DateTime(res.FromDate.Year, res.FromDate.Month, 1); i <= res.ToDate; i = i.AddMonths(1))
+                    allMonth.Add(i);
+                res.ChartData = allMonth.GroupJoin(chartBill, data => new { data.Month, data.Year }, bill => new { bill.CreatedAt.Month, bill.CreatedAt.Year },
+                    (m, bills) => new { key = m, value = bills.Sum(x => x.Total) }).ToDictionary(x => x.key.ToString("MM-yyyy"), x => x.value);
+            }    
+            else
+            {
+                var allYear = new List<int>();
+                for (int i = res.FromDate.Year; i <= res.ToDate.Year; i++)
+                    allYear.Add(i);
+
+                res.ChartData = allYear.GroupJoin(chartBill, data => data, bill => bill.CreatedAt.Year,
+                    (y, bills) => new { key = y, value = bills.Sum(x => x.Total) }).ToDictionary(x => x.key.ToString(), x => x.value);
+            }   
+            return View(res);
         }
 
         public IActionResult Menu(int id)
