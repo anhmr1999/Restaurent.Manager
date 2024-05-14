@@ -12,10 +12,14 @@ html {
 html {
     position: relative;
     min-height: 100%;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 body {
     background-color: #ffefe3 !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .avt-image {
@@ -82,7 +86,7 @@ body {
         background: #2e8b57
     }
 
-.order-dish{
+.order-dish {
     background: #FFF
 }
 
@@ -306,4 +310,21 @@ body {
 
     .btn-primary:focus, .page-item.active .page-link:focus {
         box-shadow: 0 0 0 .2rem #e49557;
+    }
+
+#order-container {
+    max-height: 80%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.bill-link {
+    color: #000;
+}
+
+    .bill-link:hover {
+        color: #000;
+        text-decoration: none;
     }

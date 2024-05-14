@@ -30,7 +30,7 @@
                 <div class="s-table">
                     @if (item.Status)
                     {
-                        <a href="@(bill == null ? Url.Action("Menu", "Home", new {id=item.Id}) : Url.Action("Bill", "Home", new { Id = item.Id }))" class="@(item.Status ? "cursor-pointer" : "")">
+                        <a href="@(bill == null ? Url.Action("Menu", "Home", new {id=item.Id}) : Url.Action("Bill", "Home", new { Id = bill.Id }))" class="@(item.Status ? "cursor-pointer" : "")">
                             <div class="p-4 @(bill == null ? "vacant" : "odered")">
                                 <div class="d-flex w-100 content">
                                     <label class="d-block m-auto text-center">

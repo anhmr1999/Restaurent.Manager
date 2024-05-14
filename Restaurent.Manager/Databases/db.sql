@@ -260,45 +260,45 @@ INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],
 (1, 19, N'Beefsteak with chilli pepper and rosemary(80g)', NULL, 180000, 1, 3)
 go
 INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
-(1, 33, N'Pepsi', NULL, 20000, 1, 2)
+(1, 33, N'Pepsi', NULL, 20000, 1, 3)
 go
 
 INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
-(2, 26, N'Golden beefsteak and tomato sauce(120g)', NULL, 490000, 1, 2)
+(2, 26, N'Golden beefsteak and tomato sauce(120g)', NULL, 490000, 1, 3)
 go
 INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
-(2, 2, N'Salad with vegetables and fruits', NULL, 100000, 1, 2)
+(2, 2, N'Salad with vegetables and fruits', NULL, 100000, 1, 3)
 go
 INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
-(2, 35, N'Aquafina', NULL, 10000, 1, 1)
-go
-
-INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
-(3, 9, N'Beefsteak with mushroom chili sauce (80g)', NULL, 120000, 1, 1)
-go
-INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
-(3, 7, N'Beefsteak with green chili sauce (80g) ', NULL, 100000, 1, 1)
-go
-INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
-(3, 3, N'Salad vegetables, fish, eggs and butter sauce', 'No eggs', 120000, 1, 1)
-go
-INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
-(3, 27, N'Cheese cake', NULL, 100000, 1, 1)
-go
-INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
-(3, 28, N'Panacosta', NULL, 100000, 1, 1)
+(2, 35, N'Aquafina', NULL, 10000, 1, 3)
 go
 
 INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
-(4, 14, N'Beefsteak with soy sauce with coriander(120g)', NULL, 220000, 1, 1)
+(3, 9, N'Beefsteak with mushroom chili sauce (80g)', NULL, 120000, 1, 3)
 go
 INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
-(4, 30, N'Melted chocolate cake', NULL, 100000, 1, 1)
+(3, 7, N'Beefsteak with green chili sauce (80g) ', NULL, 100000, 1, 3)
+go
+INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
+(3, 3, N'Salad vegetables, fish, eggs and butter sauce', 'No eggs', 120000, 1, 3)
+go
+INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
+(3, 27, N'Cheese cake', NULL, 100000, 1, 3)
+go
+INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
+(3, 28, N'Panacosta', NULL, 100000, 1, 3)
 go
 
 INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
-(5, 23, N'Beefsteak with vegetables and tomato sauce(80g)', NULL, 200000, 1, 1)
+(4, 14, N'Beefsteak with soy sauce with coriander(120g)', NULL, 220000, 1, 3)
 go
 INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
-(5, 32, N'Coca cola', NULL, 20000, 1, 1)
+(4, 30, N'Melted chocolate cake', NULL, 100000, 1, 3)
+go
+
+INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
+(5, 23, N'Beefsteak with vegetables and tomato sauce(80g)', NULL, 200000, 1, 3)
+go
+INSERT INTO [BillRecord]([BillId],[FoodId],[FoodName],[Note],[Price],[Quantity],[Status]) VALUES
+(5, 32, N'Coca cola', NULL, 20000, 1, 3)
 go

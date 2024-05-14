@@ -6,11 +6,11 @@ using Restaurent.Manager.Models.Datas;
 
 namespace Restaurent.Manager.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class BillController : Controller
     {
         AppDbContext context = new AppDbContext();
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Index(string searchKey, bool? status, DateTime? createdDate, int page = 1)
         {
             var query = context.Bill.Include(x => x.Table).AsNoTracking();
@@ -33,6 +33,50 @@ namespace Restaurent.Manager.Controllers
             ViewData["status"] = status;
             ViewData["createdDate"] = createdDate;
             return View(model);
+        }
+
+        [Authorize(Roles = "Chef")]
+        public IActionResult Progress(int billId, int foodId)
+        {
+            var record = context.BillRecord.FirstOrDefault(x => x.BillId == billId && x.FoodId == foodId);
+            if (record == null)
+                return NotFound();
+            if (record.Status != 1)
+                return BadRequest();
+            record.Status = 2;
+            context.Update(record);
+            context.SaveChanges();
+            return RedirectToAction("Index", "Home", new { choosed = billId });
+        }
+
+        [Authorize(Roles = "Chef")]
+        public IActionResult Done(int billId, int foodId)
+        {
+            var record = context.BillRecord.FirstOrDefault(x => x.BillId == billId && x.FoodId == foodId);
+            if (record == null)
+                return NotFound();
+            if (record.Status != 2)
+                return BadRequest();
+            record.Status = 3;
+            context.Update(record);
+            context.SaveChanges();
+            var bill = context.Bill.Include(x => x.Records).FirstOrDefault(x => x.Id == billId);
+            if (bill.Records.Any(x => x.Status != 3))
+                return RedirectToAction("Index", "Home", new { choosed = billId });
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize(Roles = "Waiter")]
+        public IActionResult Payment(int id) {
+            var bill = context.Bill.Include(x => x.Records).FirstOrDefault(x => x.Id == id);
+            if (bill == null || bill.PaidAt.HasValue)
+                return RedirectToAction("Index", "Home");
+            if (bill.Records.Any(x => x.Status != 3))
+                return RedirectToAction("Bill", "Home", new { id });
+            bill.PaidAt = DateTime.Now;
+            context.Update(bill);
+            context.SaveChanges();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
