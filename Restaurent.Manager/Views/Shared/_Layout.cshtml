@@ -3,6 +3,8 @@
     var db = new AppDbContext();
     var currentId = User.Identity.Name;
     var currentUser = db.User.FirstOrDefault(x => x.Id.ToString() == currentId);
+    var notifications = db.Notification.Where(x => x.UserId.ToString() == currentId)
+                        .Where(x => x.CreatedAt.Date == DateTime.Now.Date).OrderByDescending(x => x.CreatedAt).ToList();
 }
 
 <!DOCTYPE html>
@@ -54,19 +56,54 @@
                         }
                     </ul>
                     <div class="navbar-nav flex-grow-1">
-                        <a href="#" class="nav-link"><img src="~/images/icons/bell.png" height="28px" /></a>
+                        <div class="position-relative noti-head">
+                            <div class="position-relative">
+                                <a href="#" class="nav-link"><img src="~/images/icons/bell.png" height="28px" /></a>
+                                @if (notifications.Any(x => !x.IsRead))
+                                {
+                                    <div class="red-dot position-absolute"></div>
+                                }
+                            </div>
+                            <div class="position-absolute noti-content">
+                                @if (notifications.Any())
+                                {
+                                    @foreach (var item in notifications)
+                                    {
+                                        <a href="@Url.Action("Read", "Home", new {id = item.Id})" class="cursor-pointer noti-view d-block @(item.IsRead ? "":"unread")">
+                                            <div class="py-2 px-3">
+                                                <div class="d-flex">
+                                                    <div style="height: 48px; width: 48px">
+                                                        <img src="~/images/icons/fork.png" style="height: 100%; width: 100%; object-fit: cover" />
+                                                    </div>
+                                                    <div class="pl-3" style="flex: 1;">
+                                                        <h6>@Html.Raw(item.Content)</h6>
+                                                        <span style="font-size: 0.8rem">@item.CreatedAt.ToString("HH:mm")</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    }
+                                }
+                                else
+                                {
+                                    <h6 class="text-center py-2">
+                                        No notify to display!
+                                    </h6>
+                                }
+                            </div>
+                        </div>
                         <div class="avt position-relative">
-                            <a href="#"><img src="@(string.IsNullOrEmpty(currentUser?.Avatar) ? "/images/no-image.png" : currentUser.Avatar)" height="45px" /></a>
+                            <a href="#"><img src="@(string.IsNullOrEmpty(currentUser?.Avatar) ? "/images/no-image.png" : currentUser.Avatar)" height="45" /></a>
                             <div class="position-absolute logout-option">
                                 <div class="user-info d-flex mb-2">
-                                    <img src="@(string.IsNullOrEmpty(currentUser?.Avatar) ? "/images/no-image.png" : currentUser.Avatar)" height="60px" />
+                                    <img src="@(string.IsNullOrEmpty(currentUser?.Avatar) ? "/images/no-image.png" : currentUser.Avatar)" height="60" />
                                     <div class="ml-3" style="flex: 1">
                                         <h4 style="width: 100%; overflow: hidden; text-overflow: ellipsis">@Html.Raw(currentUser.Name)</h4>
                                         <span class="role-span @currentUser.Role.ToLower()">@Html.Raw(currentUser.Role)</span>
                                     </div>
                                 </div>
                                 <a href="@Url.Action("Logout", "Auth")" style="color: #000; font-weight: 600">
-                                    <img src="~/images/icons/logout.png" style="border-radius: 0 !important;" height="20" class="mr-2"/>
+                                    <img src="~/images/icons/logout.png" style="border-radius: 0 !important;" height="20" class="mr-2" />
                                     Log out
                                 </a>
                             </div>
@@ -83,12 +120,46 @@
     </div>
     <!-- Modal -->
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog position-relative" role="document">
             <div class="modal-content position-relative">
                 <button type="button" class="close position-absolute" data-dismiss="modal" aria-label="Close" style="right: 5px; top: 0; z-index: 1">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <div id="modal-container"></div>
+            </div>
+            <div class="position-absolute spinner w-100 h-100 d-none" style="top: 0; left: 0; background-color: #00000040"></div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="margin-top: 20vh">
+            <div class="modal-content p-3">
+                <div class="row">
+                    <div class="col-12">
+                        <h4 id="confirm-message"></h4>
+                    </div>
+                    <div class="col-6 mt-3">
+                        <a href="#" class="btn btn-success w-100" id="confirm-accept-btn" style="color: #FFF">Yes</a>
+                    </div>
+                    <div class="col-6 mt-3">
+                        <button type="button" class="btn btn-danger w-100" data-dismiss="modal" aria-label="No">
+                            No
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="payment-danger-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="margin-top: 20vh">
+            <div class="modal-content position-relative p-3">
+                <button type="button" class="close position-absolute" data-dismiss="modal" aria-label="Close" style="right: 5px; top: 0; z-index: 1">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="row">
+                    <div class="col-12">
+                        <h6 class="message" style="color: #cf0000"><strong></strong> has not been return to the customer</h6>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

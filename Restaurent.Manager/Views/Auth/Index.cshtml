@@ -43,10 +43,12 @@
             e.preventDefault();
             $('.pwd-i').attr('type', 'text');
             $(this).addClass('btn-close-eye').removeClass('btn-eye');
+            $(this).attr('src', '/images/icons/u-eye.png');
         }).on('click', '.btn-close-eye', function (e) {
             e.preventDefault();
             $('.pwd-i').attr('type', 'password');
             $(this).addClass('btn-eye').removeClass('btn-close-eye');
+            $(this).attr('src', '/images/icons/eye.png');
         })
     </script>
 </body>

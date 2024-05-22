@@ -99,8 +99,12 @@ $(document).on('change', '#img-input', function (e) {
 });
 
 $(document).on('click', '.btn-remove', function (e) {
-    if (!confirm('Are you sure?'))
-        e.preventDefault();
+    e.preventDefault();
+    var msg = $(this).data('message');
+    var href = $(this).attr('href');
+    $('#confirm-message').html(msg);
+    $('#confirm-accept-btn').attr('href', href);
+    $('#confirmModal').modal('show');
 });
 
 $(document).on('submit', '#employee-form', function (e) {
@@ -116,12 +120,6 @@ $(document).on('submit', '#employee-form', function (e) {
         $('.emp-email-error').html('Email is not empty');
     } else {
         $('.emp-email-error').html('');
-    }
-    if (!$('.emp-password').val()) {
-        valid = false;
-        $('.emp-password-error').html('Password is not empty');
-    } else {
-        $('.emp-password-error').html('');
     }
     if (!$('.emp-dob').val()) {
         valid = false;
@@ -198,7 +196,7 @@ $(document).on('click', '.btn-add-new-food-to-bill', function (e) {
                             </div>
                             <div class="cart-body p-0 bg-white" style="border-radius: 5px; overflow: hidden">
                                 <div class="d-flex" style="width: 100%;">
-                                    <img src="${image}" style="height: 100px; width: 100px; object-fit:cover" />
+                                    <img src="${image}" style="height: 120px; width: 120px; object-fit:cover" />
                                     <div class="pl-3" style="flex: 1">
                                         <div class="d-flex h-100">
                                             <div class="m-auto w-100">
@@ -206,9 +204,12 @@ $(document).on('click', '.btn-add-new-food-to-bill', function (e) {
                                                     <h6 class="mb-0">${name}</h6>
                                                 </div>
                                                 <span class="d-block">${priceStr}</span>
+                                                <div style="color: #e49557; font-size: 0.8rem;">${note}</div>
                                                 <div class="d-flex mt-2">
                                                     <div class="quantity-ip">
-                                                        <span class="d-inline-block">${quantity}</span>
+                                                        <span class="d-inline-block cursor-pointer option-minus">-</span>
+                                                        <span class="d-inline-block qty-display">${quantity}</span>
+                                                        <span class="d-inline-block cursor-pointer option-plus">+</span>
                                                     </div>
                                                     <div class="text-right pr-3" style="flex: 1">
                                                         <span class="cursor-pointer">
@@ -227,7 +228,7 @@ $(document).on('click', '.btn-add-new-food-to-bill', function (e) {
         var qty = parseInt(quantity) + parseInt(currentQty);
         $(current).data('qty', qty);
         $(current).find('input.quantity').val(qty);
-        $(current).find('.quantity-ip span').html(qty);
+        $(current).find('.quantity-ip .qty-display').html(qty);
         $(current).data('note', note)
         $(current).find('input.note').val(note);
     }
@@ -240,15 +241,69 @@ $(document).on('click', '.btn-add-new-food-to-bill', function (e) {
         $(parent).remove();
     loadPrice();
 }).on('click', '.btn-payment', function (e) {
+    e.preventDefault();
     if ($('#modal').find('.order-dish[data-status=1]').length > 0) {
-        e.preventDefault();
-        alert('Có món chưa lên bạn ei');
+        var focus = $('#modal').find('.order-dish[data-status=1]')[0];
+        var foodName = $(focus).data('name');
+        $('#payment-danger-modal .message strong').html(foodName);
+        $('#modal .spinner').removeClass('d-none');
+        $('#payment-danger-modal').modal('show');
+    } else {
+        var msg = $(this).data('message');
+        var href = $(this).attr('href');
+        $('#confirm-message').html(msg);
+        $('#confirm-accept-btn').attr('href', href);
+        $('#modal .spinner').removeClass('d-none');
+        $('#confirmModal').modal('show');
     }
+}).on('click', '.option-minus', function (e) {
+    e.preventDefault();
+    var qty = $(this).parents('.order-item').find('input.quantity').val();
+    var newQty = qty - 1;
+    if (newQty <= 0) return;
+    $(this).parents('.order-item').find('input.quantity').val(newQty);
+    $(this).parents('.order-item').find('span.qty-display').html(newQty);
+    $(this).parents('.order-item').data('qty', newQty);
+    loadPrice();
+}).on('click', '.option-plus', function (e) {
+    e.preventDefault();
+    var qty = $(this).parents('.order-item').find('input.quantity').val();
+    var newQty = parseInt(qty) + 1;
+    $(this).parents('.order-item').find('input.quantity').val(newQty);
+    $(this).parents('.order-item').find('span.qty-display').html(newQty);
+    $(this).parents('.order-item').data('qty', newQty);
+    loadPrice();
+}).on('click', '.btn-eye', function (e) {
+    e.preventDefault();
+    $('.pwd-i').attr('type', 'text');
+    $(this).addClass('btn-close-eye').removeClass('btn-eye');
+    $(this).attr('src', '/images/icons/u-eye.png')
+}).on('click', '.btn-close-eye', function (e) {
+    e.preventDefault();
+    $('.pwd-i').attr('type', 'password');
+    $(this).addClass('btn-eye').removeClass('btn-close-eye');
+    $(this).attr('src', '/images/icons/eye.png');
 });
 
 $('#modal').on('hidden.bs.modal', (e) => {
     $('#modal').find('.modal-dialog').removeClass('modal-lg').removeClass('modal-xl').removeClass('.modal-md');
     $('#modal-container').html('');
+});
+
+$('#payment-danger-modal, #confirmModal').on('hidden.bs.modal', (e) => {
+    $('#modal .spinner').addClass('d-none');
+});
+
+$(document).on('click', '.view-bill', function (e) {
+    e.preventDefault();
+    var id = $(this).data('id');
+    $.ajax({
+        url: '/Home/PaymentModal/' + id + '?confirm=True'
+    }).done((res) => {
+        $('#modal').find('.modal-dialog').addClass('modal-lg');
+        $('#modal-container').html(res);
+        $('#modal').modal('show');
+    });
 });
 
 function loadPrice() {
@@ -258,9 +313,7 @@ function loadPrice() {
         var price = $(item).data('price');
         total += qty * price;
     });
-    var parts = total.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    $('.bill-total-price').html(parts.join("."));
+    $('.bill-total-price').html(total.toLocaleString('en-US'));
     if ($('.add-order').find('.order-item').length > 0)
         $('.line-new-item').removeClass('d-none');
     else

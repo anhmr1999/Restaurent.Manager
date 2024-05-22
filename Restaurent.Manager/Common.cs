@@ -26,10 +26,10 @@ namespace Restaurent.Manager
             }
         }
 
-        public static string FormatCurrency(this double amount)
+        public static string FormatCurrency(this double amount, bool hasUnit = true)
         {
             //CultureInfo cultureInfo = new CultureInfo("vi-VN");
-            return $"{string.Format("{0:#,0}", amount)} đ";
+            return $"{string.Format("{0:#,0}", amount)}{(hasUnit? " đ" : "")}";
         }
     }
 }

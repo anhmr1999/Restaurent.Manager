@@ -8,7 +8,7 @@
 <div class="pt-3">
     <div class="row">
         <div class="col-md-12">
-           <form>
+            <form>
                 <div class="row">
                     <div class="col-4 col-sm-4 col-md-4 form-group">
                         <select class="form-control search-val" name="status">
@@ -37,7 +37,7 @@
                         <input class="form-control search-val" placeholder="search order..." name="searchKey" value="@ViewData["searchKey"]" />
                     </div>
                 </div>
-           </form>
+            </form>
         </div>
         <div class="col-md-12 mt-3">
             <div class="table-responsive bg-white" style="border-radius: 10px; overflow: hidden;">
@@ -54,7 +54,7 @@
                     <tbody>
                         @foreach (var item in Model.Datas)
                         {
-                            <tr>
+                            <tr class="cursor-pointer view-bill" data-id="@item.Id">
                                 <td class="text-center">#@item.Id</td>
                                 <td class="text-center">@item.Table.Name</td>
                                 <td class="text-center">@item.CreatedAt.ToShortDateString()</td>
@@ -85,3 +85,19 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @if (TempData["BillId"] != null)
+    {
+        var id = (int)TempData["BillId"];
+        <script type="text/javascript">
+            $.ajax({
+                url: '@Url.Action("PaymentModal", "Home", new { id, confirm = true })'
+            }).done((res) => {
+                $('#modal').find('.modal-dialog').addClass('modal-lg');
+                $('#modal-container').html(res);
+                $('#modal').modal('show');
+            });
+        </script>
+    }
+}

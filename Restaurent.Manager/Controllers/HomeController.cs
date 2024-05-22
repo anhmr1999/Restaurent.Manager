@@ -48,7 +48,7 @@ namespace Restaurent.Manager.Controllers
                     allDate.Add(i);
                 res.ChartData = allDate.GroupJoin(chartBill, data => data.Date, bill => bill.CreatedAt.Date,
                     (d, bills) => new { key = d.Date, value = bills.Sum(x => x.Total) }).ToDictionary(x => x.key.ToString("dd-MM-yyyy"), x => x.value);
-            }    
+            }
             else if (type == 2)
             {
                 var allMonth = new List<DateTime>();
@@ -56,7 +56,7 @@ namespace Restaurent.Manager.Controllers
                     allMonth.Add(i);
                 res.ChartData = allMonth.GroupJoin(chartBill, data => new { data.Month, data.Year }, bill => new { bill.CreatedAt.Month, bill.CreatedAt.Year },
                     (m, bills) => new { key = m, value = bills.Sum(x => x.Total) }).ToDictionary(x => x.key.ToString("MM-yyyy"), x => x.value);
-            }    
+            }
             else
             {
                 var allYear = new List<int>();
@@ -65,7 +65,7 @@ namespace Restaurent.Manager.Controllers
 
                 res.ChartData = allYear.GroupJoin(chartBill, data => data, bill => bill.CreatedAt.Year,
                     (y, bills) => new { key = y, value = bills.Sum(x => x.Total) }).ToDictionary(x => x.key.ToString(), x => x.value);
-            }   
+            }
             return View(res);
         }
 
@@ -75,14 +75,14 @@ namespace Restaurent.Manager.Controllers
                 return RedirectToAction("Index");
             var table = context.Table.FirstOrDefault(x => x.Id == id);
             ViewData["bill"] = new Bill() { TableId = id, Table = table, Records = new List<BillRecord>() };
-            var foods = context.Food.Where(x => x.Status).ToList();
+            var foods = context.Food.ToList();
             return View(foods);
         }
 
         public IActionResult Bill(int id)
         {
             ViewData["bill"] = context.Bill.Include(x => x.Records).ThenInclude(x => x.Food).Include(x => x.Table).FirstOrDefault(x => x.Id == id);
-            var foods = context.Food.Where(x => x.Status).ToList();
+            var foods = context.Food.ToList();
             return View("Menu", foods);
         }
 
@@ -118,6 +118,22 @@ namespace Restaurent.Manager.Controllers
                     return RedirectToAction("Index");
                 }
 
+                try
+                {
+                    var notiContent = $"Has new bill <b>#{model.Id}!</b>";
+                    var userIds = context.User.Where(x => x.Role == "Chef").Select(x => x.Id).ToList();
+                    var url = Url.Action("Index", "Home", new { choosed = model.Id });
+                    context.AddRange(userIds.Select(x => new Notification
+                    {
+                        UserId = x,
+                        Content = notiContent,
+                        Url = url,
+                        CreatedAt = DateTime.Now
+                    }));
+                    context.SaveChanges();
+                }
+                catch { }
+
                 return RedirectToAction("Bill", new { id = model.Id });
             }
             else
@@ -126,8 +142,10 @@ namespace Restaurent.Manager.Controllers
                 var currentRecords = context.BillRecord.Where(x => x.BillId == bill.Id).ToList();
                 context.RemoveRange(currentRecords);
                 var records = new List<BillRecord>();
-                foreach (var item in model.Records.GroupBy(x => x.FoodId))
+                foreach (var item in model.Records.GroupBy(x => x.FoodId).Where(x => x.Sum(r => r.Quantity) > 0))
                 {
+                    var same = currentRecords.FirstOrDefault(x => x.FoodId == item.Key);
+
                     var food = foods.FirstOrDefault(f => f.Id == item.Key);
                     var record = new BillRecord();
                     record.FoodId = food.Id;
@@ -136,7 +154,13 @@ namespace Restaurent.Manager.Controllers
                     record.Price = food.Price;
                     record.Quantity = item.Sum(x => x.Quantity);
                     record.Note = string.Join(", ", item.Select(x => x.Note));
-                    record.Status = 1;
+                    if (same != null && same.Status != 1 && same.Quantity == record.Quantity)
+                    {
+                        record.Status = same.Status;
+                    } else
+                    {
+                        record.Status = 1;
+                    }    
                     records.Add(record);
                 }
                 bill.SubTotal = records.Sum(x => x.Quantity * x.Price);
@@ -146,6 +170,22 @@ namespace Restaurent.Manager.Controllers
                 context.Update(bill);
                 context.AddRange(records);
                 context.SaveChanges();
+
+                try
+                {
+                    var notiContent = $"Bill <b>#{model.Id}</b> is changed!";
+                    var userIds = context.User.Where(x => x.Role == "Chef").Select(x => x.Id).ToList();
+                    var url = Url.Action("Index", "Home", new { choosed = model.Id });
+                    context.AddRange(userIds.Select(x => new Notification
+                    {
+                        UserId = x,
+                        Content = notiContent,
+                        Url = url,
+                        CreatedAt = DateTime.Now
+                    }));
+                    context.SaveChanges();
+                }
+                catch { }
                 return RedirectToAction("Bill", new { id = bill.Id });
             }
         }
@@ -158,12 +198,30 @@ namespace Restaurent.Manager.Controllers
             return PartialView(food);
         }
 
-        public IActionResult PaymentModal(int id)
+        public IActionResult PaymentModal(int id, bool confirm = false)
         {
             var bill = context.Bill.Include(x => x.Table).Include(x => x.Records).ThenInclude(x => x.Food).FirstOrDefault(x => x.Id == id);
-            if(bill == null)
+            if (bill == null)
                 return NotFound();
+            var url = Url.Action("Payment", "Bill", new { id });
+            if (confirm)
+                url = Url.Action("ConfirmPayment", "Bill", new { id });
+            ViewData["Url"] = url;
             return PartialView(bill);
+        }
+
+        public IActionResult Read(int id)
+        {
+            var notify = context.Notification.FirstOrDefault(x => x.Id == id);
+            if (notify == null)
+                return RedirectToAction("Index");
+
+            notify.IsRead = true;
+            context.Update(notify);
+            context.SaveChanges();
+            if (notify.RequiredPayment.HasValue)
+                TempData["BillId"] = notify.RequiredPayment;
+            return Redirect(notify.Url);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿@model Restaurent.Manager.Models.PagingModel<Restaurent.Manager.Models.Datas.User>
+﻿@using Restaurent.Manager.Models.Datas
+@using Newtonsoft.Json;
+@model Restaurent.Manager.Models.PagingModel<Restaurent.Manager.Models.Datas.User>
 @{
     ViewData["Title"] = "Employee Page";
 }
@@ -65,9 +67,11 @@
                                     <a class="btn-edit-modal" href="@Url.Action("AddOrEditModal", "Employee", new {empId = item.Id})">
                                         <img src="/images/icons/pencil.png" class="cursor-pointer" width="20" height="20" />
                                     </a>
-                                    <a class="btn-remove" href="@Url.Action("Remove", "Employee", new {id = item.Id})" data-model="employee">
-                                        <img src="/images/icons/trash.png" class="cursor-pointer ml-2" width="20" height="20" />
-                                    </a>
+                                    @if(item.Role != "Admin"){
+                                        <a class="btn-remove" href="@Url.Action("Remove", "Employee", new {id = item.Id})" data-message="Would you like to delete this employee?">
+                                            <img src="/images/icons/trash.png" class="cursor-pointer ml-2" width="20" height="20" />
+                                        </a>
+                                    }
                                 </td>
                             </tr>
                         }
@@ -85,3 +89,29 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @if (TempData["Employee"] != null)
+    {
+        var emp = JsonConvert.DeserializeObject<User>(TempData["Employee"].ToString());
+        var url = @Url.Action("AddOrEditModal", "Employee");
+        if (emp.Id != default)
+            url = Url.Action("AddOrEditModal", "Employee", new { empId = emp.Id });
+        <script type="text/javascript">
+            $.ajax({
+                url: '@url'
+            }).done((res) => {
+                $('#modal-container').html(res);
+                $('#empId').val('@emp.Id');
+                $('.emp-name').val('@emp.Name');
+                $('#role-ip').val('@emp.Role');
+                $('.role-button[data-role="@emp.Role"]').trigger('click');
+                $('.emp-email').val('@emp.Email');
+                $('.emp-email-error').html('E-mail is being used');
+                $('.emp-dob').val('@emp.Birthday?.ToString("yyyy-MM-dd")');
+                $('.emp-phone').val('@emp.Phone')
+                $('#modal').modal('show');
+            });
+        </script>
+    }
+}

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Restaurent.Manager.Models;
 using Restaurent.Manager.Models.Datas;
 
@@ -49,6 +50,12 @@ namespace Restaurent.Manager.Controllers
             var user = context.User.FirstOrDefault(x => x.Id == model.Id);
             if (user == null)
             {
+                if(context.User.Any(x => x.Email == model.Email))
+                {
+                    TempData["Employee"] = JsonConvert.SerializeObject(model);
+                    return RedirectToAction("Index");
+                }    
+
                 user = new User
                 {
                     Name = model.Name,
@@ -64,6 +71,12 @@ namespace Restaurent.Manager.Controllers
             }
             else
             {
+                if (context.User.Any(x => x.Email == model.Email && x.Id != model.Id))
+                {
+                    TempData["Employee"] = JsonConvert.SerializeObject(model);
+                    return RedirectToAction("Index");
+                }
+
                 user.Name = model.Name;
                 user.Email = model.Email;
                 user.Phone = model.Phone;

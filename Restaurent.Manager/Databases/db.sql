@@ -57,6 +57,18 @@ CREATE TABLE [BillRecord](
 	/* 1: Đang chờ (waiting), 2: Đang xử lý (cooking), 3: Đã trả ra bàn (done) */
 )
 GO
+
+CREATE TABLE [Notification](
+	[Id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[UserId] INT NOT NULL FOREIGN KEY REFERENCES [User](Id),
+	[Content] NVARCHAR(255) NOT NULL,
+	[RequiredPayment] INT,
+	[Url] VARCHAR(255) NOT NULL,
+	[IsRead] BIT DEFAULT 0,
+	[CreatedAt] DATETIME DEFAULT GETDATE()
+)
+GO
+
 /* DB of User*/
 INSERT INTO [User]([Name], [Email], [Phone], [Birthday], [Password], [Role]) VALUES
 (N'Khanh','admin@gmail.com', '0923654789', '2000/02/14', 'e10adc3949ba59abbe56e057f20f883e', 'Admin') /* pass: 123456 */

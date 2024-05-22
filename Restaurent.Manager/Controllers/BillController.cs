@@ -60,7 +60,22 @@ namespace Restaurent.Manager.Controllers
             record.Status = 3;
             context.Update(record);
             context.SaveChanges();
-            var bill = context.Bill.Include(x => x.Records).FirstOrDefault(x => x.Id == billId);
+                var bill = context.Bill.Include(x => x.Table).Include(x => x.Records).FirstOrDefault(x => x.Id == billId);
+            try
+            {
+                var notiContent = $"Table <b>{bill.Table.Name} - #{billId}</b>, <b>#{record.FoodName}</b> is done!";
+                var userIds = context.User.Where(x => x.Role == "Waiter").Select(x => x.Id).ToList();
+                var url = Url.Action("Bill", "Home", new { id = billId });
+                context.AddRange(userIds.Select(x => new Notification
+                {
+                    UserId = x,
+                    Content = notiContent,
+                    Url = url,
+                    CreatedAt = DateTime.Now
+                }));
+                context.SaveChanges();
+            }
+            catch { }
             if (bill.Records.Any(x => x.Status != 3))
                 return RedirectToAction("Index", "Home", new { choosed = billId });
             return RedirectToAction("Index", "Home");
@@ -73,10 +88,36 @@ namespace Restaurent.Manager.Controllers
                 return RedirectToAction("Index", "Home");
             if (bill.Records.Any(x => x.Status != 3))
                 return RedirectToAction("Bill", "Home", new { id });
+
+            var notiContent = $"Bill <b>#{bill.Id}</b> requires payment!";
+            var userIds = context.User.Where(x => x.Role == "Admin").Select(x => x.Id).ToList();
+            var url = Url.Action("Index", "Bill");
+            context.AddRange(userIds.Select(x => new Notification
+            {
+                UserId = x,
+                Content = notiContent,
+                Url = url,
+                RequiredPayment = id,
+                CreatedAt = DateTime.Now
+            }));
+            context.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult ConfirmPayment(int id)
+        {
+            var bill = context.Bill.Include(x => x.Records).FirstOrDefault(x => x.Id == id);
+            if (bill == null || bill.PaidAt.HasValue)
+                return RedirectToAction("Index", "Bill");
+            if (bill.Records.Any(x => x.Status != 3))
+                return RedirectToAction("Bill", "Home", new { id });
+
             bill.PaidAt = DateTime.Now;
             context.Update(bill);
             context.SaveChanges();
-            return RedirectToAction("Index", "Home");
+            TempData["BillId"] = id;
+            return RedirectToAction("Index", "Bill");
         }
     }
 }

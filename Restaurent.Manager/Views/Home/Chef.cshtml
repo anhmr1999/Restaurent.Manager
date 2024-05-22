@@ -3,9 +3,13 @@
 
 @{
     ViewData["Title"] = "Home Page";
-    var bill = Model.Where(x => x.Records.Any(f => f.Status == 1)).FirstOrDefault();
+    var bill = Model.Where(x => x.Records.Any(f => f.Status != 3)).FirstOrDefault();
     if (ViewData["bill"] != null)
         bill = (Bill)ViewData["bill"];
+
+    var showProgress = bill == null || bill.Records.Any(x => x.Status != 3);
+    if (bill != null && !bill.Records.Any(x => x.Status != 3))
+        showProgress = false;
 }
 
 <div class="pt-3">
@@ -14,15 +18,15 @@
             <div class="d-flex">
                 <div class="toolbar">
                     <div class="row m-0">
-                        <div class="col-sm-6 options active" data-for="bill-inprogress"><span>In progress</span></div>
-                        <div class="col-sm-6 options" data-for="bill-done"><span>Done</span></div>
+                        <div class="col-sm-6 options @(showProgress ? "active" : "")" data-for="bill-inprogress"><span>In progress</span></div>
+                        <div class="col-sm-6 options @(!showProgress ? "active" : "")" data-for="bill-done"><span>Done</span></div>
                     </div>
                 </div>
             </div>
             <div class="mt-0">
                 @foreach (var item in Model)
                 {
-                    <a href="@Url.Action("Index", "Home", new {choosed = item.Id})" class="bill-link table-view @(item.Records.Any(x => x.Status == 1) ? "bill-inprogress" : "bill-done d-none")">
+                    <a href="@Url.Action("Index", "Home", new {choosed = item.Id})" class="bill-link table-view @(item.Records.Any(x => x.Status != 3) ? "bill-inprogress" : "bill-done") @(showProgress == item.Records.Any(x => x.Status != 3)? "" : "d-none")">
                         <div class="py-2 my-1 px-3 order-border @(item.Id == bill?.Id ? "active" : "")">
                             <div class="d-flex">
                                 <h4 style="flex: 1; margin: 0">Order: #@item.Id</h4>
@@ -58,7 +62,7 @@
                         {
                             <div class="border-bottom py-2">
                                 <h4 class="mb-0">@item.FoodName</h4>
-                                <label class="mb-0">Quantity: <strong>2</strong></label>
+                                <label class="mb-0">Quantity: <strong>@item.Quantity</strong></label>
                                 <div class="d-flex act-content">
                                     <span style="flex: 1; display: inline-block">@item.Note</span>
                                     @if (item.Status == 3)

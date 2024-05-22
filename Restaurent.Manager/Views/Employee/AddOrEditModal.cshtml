@@ -2,7 +2,7 @@
 
 <div class="modal-body">
    <form id="employee-form" action="@Url.Action("Save", "Employee")" method="post" enctype="multipart/form-data">
-       <input type="hidden" name="id" value="@Model.Id"/>
+       <input type="hidden" id="empId" name="id" value="@Model.Id"/>
         <div class="row">
             <div class="col-9">
                 <div class="d-flex">
@@ -36,8 +36,9 @@
                 </div>
                 <div class="row mb-1">
                     <label class="col-4">Password</label>
-                    <div class="col-8">
-                        <input class="form-control form-control-sm emp-password" type="password" name="password"/>
+                    <div class="col-8 position-relative">
+                        <input class="form-control form-control-sm pwd-i emp-password" type="password" name="password" style="padding-right: 30px;" />
+                        <img src="~/images/icons/eye.png" class="cursor-pointer position-absolute btn-eye" height="20" style="top: 6px; right: 20px" />
                         <span class="text-danger emp-password-error" style="font-size: 0.8rem"></span>
                     </div>
                 </div>

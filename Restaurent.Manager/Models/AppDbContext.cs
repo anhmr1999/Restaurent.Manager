@@ -10,6 +10,7 @@ namespace Restaurent.Manager.Models
         public DbSet<Food> Food { get; set; }
         public DbSet<Bill> Bill { get; set; }
         public DbSet<BillRecord> BillRecord { get; set; }
+        public DbSet<Notification> Notification { get; set; }
 
         public AppDbContext() {}
 
