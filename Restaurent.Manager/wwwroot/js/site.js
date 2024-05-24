@@ -242,8 +242,10 @@ $(document).on('click', '.btn-add-new-food-to-bill', function (e) {
     loadPrice();
 }).on('click', '.btn-payment', function (e) {
     e.preventDefault();
-    if ($('#modal').find('.order-dish[data-status=1]').length > 0) {
+    if ($('#modal').find('.order-dish[data-status=1]').length > 0 || $('#modal').find('.order-dish[data-status=2]').length > 0) {
         var focus = $('#modal').find('.order-dish[data-status=1]')[0];
+        if (!focus)
+            focus = $('#modal').find('.order-dish[data-status=2]')[0]
         var foodName = $(focus).data('name');
         $('#payment-danger-modal .message strong').html(foodName);
         $('#modal .spinner').removeClass('d-none');

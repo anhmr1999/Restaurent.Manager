@@ -167,6 +167,7 @@ namespace Restaurent.Manager.Controllers
                 bill.Tax = bill.SubTotal / 10;
                 bill.ServiceFee = bill.SubTotal / 20;
                 bill.Total = bill.SubTotal + bill.Tax + bill.ServiceFee;
+                bill.CreatedAt = DateTime.Now;
                 context.Update(bill);
                 context.AddRange(records);
                 context.SaveChanges();

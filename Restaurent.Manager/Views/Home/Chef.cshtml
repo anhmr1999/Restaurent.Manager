@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="mt-0">
-                @foreach (var item in Model)
+                @foreach (var item in Model.OrderBy(x => x.CreatedAt))
                 {
                     <a href="@Url.Action("Index", "Home", new {choosed = item.Id})" class="bill-link table-view @(item.Records.Any(x => x.Status != 3) ? "bill-inprogress" : "bill-done") @(showProgress == item.Records.Any(x => x.Status != 3)? "" : "d-none")">
                         <div class="py-2 my-1 px-3 order-border @(item.Id == bill?.Id ? "active" : "")">
